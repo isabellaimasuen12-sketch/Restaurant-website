@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="../images/flogo.png" type="images/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+       <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Food Website/About page</title>
+</head>
+<body>
+      <div class="overlay" id="overlay"></div>
+
+    <!-- ── SLIDE-IN SIDEBAR ── -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="./images/flogo.png" alt="Logo">
+            <span>FoodieHub</span>
+        </div>
+        <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+        <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
+        <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
+    </nav>
+
+    <!-- ── HEADER ── -->
+    <header>
+        <div class="header">
+
+            <!-- Logo (always visible, always left) -->
+            <div class="logo">
+                <img src="./images/flogo.png" alt="Logo">
+            </div>
+
+            <!-- Mobile-only: search + user icons + hamburger (all on the right) -->
+            <div class="headerbar">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i>
+                    </li>
+                    <div class="search" id="mob-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+                <!-- Hamburger sits inside headerbar so it's grouped on the right -->
+                <div class="bar" id="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="nav">
+                <ul>
+                    <a href="index.html"><li>Home</li></a>
+                    <a href="about.html"><li>About</li></a>
+                    <a href="foodmenu.html"><li>Food Menu</li></a>
+                    <a href="Booking.html"><li>Book Table</li></a>
+                </ul>
+            </div>
+
+            <!-- Desktop account icons -->
+            <div class="account">
+                <ul>
+                    <a href="#">
+                        <li><i class="fa-solid fa-house-chimney"></i></li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i>
+                        </li>
+                    </a>
+                    <div class="search" id="desk-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+            </div>
+
+        </div>
+    </header>
+    <div class="about">
+        <div class="about_header">
+            <div>
+                <h1>About us</h1>
+         <p>Welcome to FoodieHub! We're more than just a place to eat; we're a passion project born from a love for Nigerian cuisine. Our
+                     journey started with a simple idea: to create a cozy space where friends and family can gather, share laughter, and
+                      savor incredible food made with the freshest, locally-sourced ingredients whenever possible. Every dish on our menu
+                       is crafted with care, tradition, and a little bit of our magic.Come on in, pull up a chair, and let us make your 
+                       next meal memorable. We can't wait to share our table with you!</p>
+            </div>
+            <div>
+                <img src="images/peppersoup.jpg" alt="">
+            </div>
+        </div>
+        <div class="chefs">
+                    <h2>Our Golden Chefs</h2>
+            <div class="single_chef">
+                <div>
+                    <img src="images/chef1.jpg" alt="chef1">
+                </div>
+                <h3>Chef Susan Leonard</h3>
+                <p>Specializing in pastries and desserts, Chef Susan adds the perfect sweet ending 
+                    to your dining experience.
+                     Her handcrafted treats are made fresh daily with love and precision.</p>
+            </div>
+              <div class="single_chef">
+                <div>
+                    <img src="images/chef4.jpg" alt="chef1">
+                </div>
+                <h3>Chef Fatima Habib</h3>
+                <p>A creative force in the kitchen, Chef Fatima blends contemporary
+                     techniques with classic Nigerian dishes. 
+                    Her innovative presentation and attention to detail make every plate unforgettable.</p>
+            </div>
+              <div class="single_chef">
+                <div>
+                    <img src="images/chef2.jpg" alt="chef1">
+                </div>
+                <h3>Chef Ashley Cromwell</h3>
+                <p>Chef Ashley is known for her mastery of local spices and authentic recipes passed down through generations. She ensures 
+                    every meal feels like home-cooked comfort with a refined touch.</p>
+            </div>
+              <div class="single_chef">
+                <div>
+                    <img src="images/chef3.jpg" alt="chef1">
+                </div>
+                <h3>Chef Kate Samuel</h3>
+                <p>With over 15 years of culinary experience, Chef Paul specializes in traditional Nigerian cuisine with a modern twist. 
+                    Her passion for bold flavours and fresh ingredients brings every dish to life.</p>
+            </div>
+        </div>
+        <div class="story">
+            <div>
+            <h1>Our story</h1>
+            <p>At FoodieHub, we believe that great food brings people together. Our story began with a simple yet powerful
+                 idea: to create a space where passion for food, hospitality, and community could come together under 
+                 one roof. Founded in 2022, we started as a small neighborhood eatery with a commitment to serving fresh,
+                  high-quality dishes made with locally sourced ingredients. Over the years, that humble vision has 
+                  evolved into a beloved destination for food lovers near and far.Our chef-driven menu blends
+                   Nigerian cuisine with innovative twists, drawing inspiration from tradition, and a cultural fusion. 
+                   Every dish is crafted with care and attention to detail, from the vibrant flavors of our signature
+                    Jollof to the decadent sweetness of our homemade desserts. We believe in the importance of tradition,
+                     but we also embrace creativity and the art of culinary exploration.But our story 
+                     is n0t just about food. It is about the people who make our restaurant a special place.
+                      From the kitchen to the front-of-house staff, every member of our team is passionate
+                       about making every dining experience unforgettable. Our goal is to make you feel like
+                        family from the moment you walk through our doors, whether you're here for a casual 
+                        lunch, a romantic dinner, or a celebration with friends.As we continue to grow,
+                         we remain deeply rooted in the values that brought us here: quality, creativity, 
+                         and an unwavering commitment to excellence. Thank you for being a part of our 
+                         journey. We can’t wait to share more delicious moments with you.</p>
+                </div>
+        </div>
+        <footer class="footer">
+    <div class="footer-container">
+
+        <!-- Column 1: Logo & Tagline -->
+        <div class="footer-col footer-brand">
+            <img src="./images/flogo.png" alt="FoodieHub Logo">
+            <span>FoodieHub</span>
+            <p>Bringing the rich flavours of Nigerian cuisine to your table. Made with love, served with pride.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+
+        <!-- Column 2: Contact Info -->
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="fa-solid fa-location-dot"></i> 15 Adeola crescent, opeyemi road,Ikeja Lagos, Nigeria</li>
+                <li><i class="fa-solid fa-phone"></i> +234 801 234 5678</li>
+                <li><i class="fa-solid fa-envelope"></i> hello@foodiehub.com</li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Opening Hours -->
+        <div class="footer-col">
+            <h3>Opening Hours</h3>
+            <ul>
+                <li><span>Monday – Friday</span> <span>9:00am – 10:00pm</span></li>
+                <li><span>Saturday</span> <span>10:00am – 11:00pm</span></li>
+                <li><span>Sunday</span> <span>12:00pm – 9:00pm</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <p>&copy; 2025 FoodieHub. All rights reserved.</p>
+    </div>
+</footer>
+    </div>
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar   = document.getElementById('sidebar');
+        const overlay   = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+            hamburger.classList.add('open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+
+        hamburger.addEventListener('click', () =>
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar()
+        );
+        overlay.addEventListener('click', closeSidebar);
+
+        // Search toggles
+        function bindSearch(toggleId, searchId) {
+            document.getElementById(toggleId).addEventListener('click', () => {
+                const el = document.getElementById(searchId);
+                el.classList.toggle('open');
+                if (el.classList.contains('open')) el.querySelector('input').focus();
+            });
+        }
+        bindSearch('desk-search-toggle', 'desk-search');
+        bindSearch('mob-search-toggle',  'mob-search');
+    </script>
+</body>
+</html>

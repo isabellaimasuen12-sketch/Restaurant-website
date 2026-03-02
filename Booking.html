@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+      <link rel="shortcut icon" href="../images/flogo.png" type="images/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Food Website/Book a table page</title>
+</head>
+<body>
+     <div class="overlay" id="overlay"></div>
+       <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="./images/flogo.png" alt="Logo">
+            <span>FoodieHub</span>
+        </div>
+        <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+        <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
+        <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
+    </nav>
+       <header>
+        <div class="header">
+
+            <!-- Logo (always visible, always left) -->
+            <div class="logo">
+                <img src="./images/flogo.png" alt="Logo">
+            </div>
+
+            <!-- Mobile-only: search + user icons + hamburger (all on the right) -->
+            <div class="headerbar">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i>
+                    </li>
+                    <div class="search" id="mob-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+                <!-- Hamburger sits inside headerbar so it's grouped on the right -->
+                <div class="bar" id="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="nav">
+                <ul>
+                    <a href="index1.html"><li>Home</li></a>
+                    <a href="about.html"><li>About</li></a>
+                    <a href="foodmenu.html"><li>Food Menu</li></a>
+                    <a href="Booking.html"><li>Book Table</li></a>
+                </ul>
+            </div>
+
+            <!-- Desktop account icons -->
+            <div class="account">
+                <ul>
+                    <a href="#">
+                        <li><i class="fa-solid fa-house-chimney"></i></li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i>
+                        </li>
+                    </a>
+                    <div class="search" id="desk-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+            </div>
+
+        </div>
+    </header>
+    <div class="book Table">
+ <section class="booking">
+    <div class="booking-container">
+
+        <div class="booking-header">
+            <h1>Book a Table</h1>
+            <p>Reserve your spot and let us take care of the rest. We look forward to dining with you!</p>
+        </div>
+
+        <form class="booking-form">
+
+            <!-- Full Name & Phone -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name"><i class="fa-solid fa-user"></i> Full Name</label>
+                    <input type="text" id="name" placeholder="e.g. John Adeyemi" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone"><i class="fa-solid fa-phone"></i> Phone Number</label>
+                    <input type="tel" id="phone" placeholder="e.g. +234 801 234 5678" required>
+                </div>
+            </div>
+
+            <!-- Email & Guests -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="email" placeholder="e.g. john@email.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="guests"><i class="fa-solid fa-users"></i> Number of Guests</label>
+                    <select id="guests" required>
+                        <option value="" disabled selected>Select guests</option>
+                        <option value="1">1 Guest</option>
+                        <option value="2">2 Guests</option>
+                        <option value="3">3 Guests</option>
+                        <option value="4">4 Guests</option>
+                        <option value="5">5 Guests</option>
+                        <option value="6">6+ Guests</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Date & Time -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="date"><i class="fa-solid fa-calendar-days"></i> Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="time"><i class="fa-solid fa-clock"></i> Time</label>
+                    <input type="time" id="time" required>
+                </div>
+            </div>
+
+            <button type="submit" class="booking-btn">
+                Reserve My Table <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+
+        </form>
+
+    </div>
+</section>
+                                <footer class="footer">
+    <div class="footer-container">
+
+        <!-- Column 1: Logo & Tagline -->
+        <div class="footer-col footer-brand">
+            <img src="./images/flogo.png" alt="FoodieHub Logo">
+            <span>FoodieHub</span>
+            <p>Bringing the rich flavours of Nigerian cuisine to your table. Made with love, served with pride.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+
+        <!-- Column 2: Contact Info -->
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="fa-solid fa-location-dot"></i> 15 Adeola crescent, opeyemi road,Ikeja Lagos, Nigeria</li>
+                <li><i class="fa-solid fa-phone"></i> +234 801 234 5678</li>
+                <li><i class="fa-solid fa-envelope"></i> hello@foodiehub.com</li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Opening Hours -->
+        <div class="footer-col">
+            <h3>Opening Hours</h3>
+            <ul>
+                <li><span>Monday – Friday</span> <span>9:00am – 10:00pm</span></li>
+                <li><span>Saturday</span> <span>10:00am – 11:00pm</span></li>
+                <li><span>Sunday</span> <span>12:00pm – 9:00pm</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <p>&copy; 2025 FoodieHub. All rights reserved.</p>
+    </div>
+</footer>
+    </div>
+      <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar   = document.getElementById('sidebar');
+        const overlay   = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+            hamburger.classList.add('open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+
+        hamburger.addEventListener('click', () =>
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar()
+        );
+        overlay.addEventListener('click', closeSidebar);
+
+        // Search toggles
+        function bindSearch(toggleId, searchId) {
+            document.getElementById(toggleId).addEventListener('click', () => {
+                const el = document.getElementById(searchId);
+                el.classList.toggle('open');
+                if (el.classList.contains('open')) el.querySelector('input').focus();
+            });
+        }
+        bindSearch('desk-search-toggle', 'desk-search');
+        bindSearch('mob-search-toggle',  'mob-search');
+    </script>
+</body>
+</html>

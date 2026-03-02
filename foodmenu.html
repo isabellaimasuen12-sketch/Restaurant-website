@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="shortcut icon" href="../images/flogo.png" type="images/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FoodieHub — Food Menu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="style.css">
+ 
+</head>
+<body>
+
+  <!-- OVERLAY -->
+  <div class="overlay" id="overlay"></div>
+   <!-- ── SLIDE-IN SIDEBAR ── -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="./images/flogo.png" alt="Logo">
+            <span>FoodieHub</span>
+        </div>
+        <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+        <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
+        <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
+    </nav>
+
+
+  <!-- HEADER -->
+    <header>
+        <div class="header">
+
+            <!-- Logo (always visible, always left) -->
+            <div class="logo">
+                <img src="./images/flogo.png" alt="Logo">
+            </div>
+
+            <!-- Mobile-only: search + user icons + hamburger (all on the right) -->
+            <div class="headerbar">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i>
+                    </li>
+                    <div class="search" id="mob-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+                <!-- Hamburger sits inside headerbar so it's grouped on the right -->
+                <div class="bar" id="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="nav">
+                <ul>
+                    <a href="index.html"><li>Home</li></a>
+                    <a href="about.html"><li>About</li></a>
+                    <a href="foodmenu.html"><li>Food Menu</li></a>
+                    <a href="Booking.html"><li>Book Table</li></a>
+                </ul>
+            </div>
+
+            <!-- Desktop account icons -->
+            <div class="account">
+                <ul>
+                    <a href="#">
+                        <li><i class="fa-solid fa-house-chimney"></i></li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i>
+                        </li>
+                    </a>
+                    <div class="search" id="desk-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+            </div>
+
+        </div>
+    </header>
+ 
+  <section class="food_menu">
+    <div class="food_menu__inner">
+
+      <!-- Heading -->
+      <div class="food_menu__heading">
+        <h1>Our <em>Menu</em></h1>
+        <p>Freshly made, honestly priced — discover your next favourite dish.</p>
+      </div>
+
+      <!-- Grid -->
+      <div class="food_grid">
+
+        <!-- Card 1 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/amala.jpg" alt="Amala and Ewedu Soup">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Soups</span>
+            <h3 class="food__name">Amala & Ewedu Soup</h3>
+            <p class="food__desc">Silky yam flour swallow paired with fresh ewedu in a rich beletede stew.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+         <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/NKWOBI.jpg" alt="Nkwobi">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Soups</span>
+            <h3 class="food__name">Nkwobi</h3>
+            <p class="food__desc">Spicy cow foot delicacy, a popular,flavorful igbo traditional starter.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+         <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/bllack soup.jpg" alt="Black soup and starch">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Soups</span>
+            <h3 class="food__name">Black soup and starch</h3>
+            <p class="food__desc">Edo delicacy,rich dark soup,paired with soft cassava swallow.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div> 
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/OKPA.jpg" alt="Okpa">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Local Okpa</h3>
+            <p class="food__desc">Steamed savory pudding from bambara nuts,a popular healthy snack.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/istockphoto-1327486548-612x612.jpg" alt="Egusi Soup and Eba">
+          </div>
+          <div class="food__body">
+            <span class="food__category">Soups</span>
+            <h3 class="food__name">Egusi Soup & Eba</h3>
+            <p class="food__desc">Ground melon seed soup with stockfish, assorted meat & cassava fufu.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <span class="food__stars-count">(94)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,200 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/istockphoto-1448028228-612x612.jpg" alt="Jollof Rice and Chicken">
+            <span class="food__badge">Bestseller</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Rice Dishes</span>
+            <h3 class="food__name">Jollof Rice & Chicken</h3>
+            <p class="food__desc">Smoky party-style Jollof rice served with a whole seasoned grilled chicken.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <span class="food__stars-count">(210)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦3,000 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/plantain.jpg" alt="Fried Rice and Plantain">
+          </div>
+          <div class="food__body">
+            <span class="food__category">Rice Dishes</span>
+            <h3 class="food__name">Fried Rice & Plantain</h3>
+            <p class="food__desc">Colourful stir-fried rice with garden vegetables & sweet ripe plantain slices.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(145)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,800 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/suya.jpg" alt="Suya Platter">
+            <span class="food__badge">Spicy 🌶</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Grills</span>
+            <h3 class="food__name">Suya Platter</h3>
+            <p class="food__desc">Thinly sliced beef skewers seasoned with yaji spice, served with onions & tomatoes.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(176)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦3,500 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/tilapia.jpg" alt="Grilled Tilapia">
+          </div>
+          <div class="food__body">
+            <span class="food__category">Grills</span>
+            <h3 class="food__name">Grilled Tilapia</h3>
+            <p class="food__desc">Whole tilapia marinated in pepper sauce, char-grilled & served with chips.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(102)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦4,000 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 7 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/puff puff.jpg" alt="Puff Puff">
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Puff-Puff</h3>
+            <p class="food__desc">Light, fluffy deep-fried dough balls dusted in cinnamon sugar.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-regular fa-star"></i>
+              <span class="food__stars-count">(87)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦800 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+        <!-- Card 8 -->
+        <div class="food">
+          <div class="food__img-wrap">
+            <img src="images/chapman.jpg" alt="Chapman Cocktail">
+            <span class="food__badge">Refreshing</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Drinks</span>
+            <h3 class="food__name">Chapman Cocktail</h3>
+            <p class="food__desc">Nigerian classic: grenadine, Fanta, Sprite & cucumber over crushed ice.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(98)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦1,200 <small>per serving</small></div>
+            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+          </div>
+        </div>
+
+      </div><!-- /food_grid -->
+    </div><!-- /food_menu__inner -->
+  </section>
+
+  <!-- Your existing navbar script -->
+  <script>
+    const hamburger = document.getElementById('hamburger');
+    const sidebar   = document.getElementById('sidebar');
+    const overlay   = document.getElementById('overlay');
+
+    function openSidebar()  { sidebar.classList.add('open');    overlay.classList.add('open');    hamburger.classList.add('open'); }
+    function closeSidebar() { sidebar.classList.remove('open'); overlay.classList.remove('open'); hamburger.classList.remove('open'); }
+
+    hamburger.addEventListener('click', () =>
+      sidebar.classList.contains('open') ? closeSidebar() : openSidebar()
+    );
+    overlay.addEventListener('click', closeSidebar);
+
+    function bindSearch(toggleId, searchId) {
+      document.getElementById(toggleId).addEventListener('click', () => {
+        const el = document.getElementById(searchId);
+        el.classList.toggle('open');
+        if (el.classList.contains('open')) el.querySelector('input').focus();
+      });
+    }
+    bindSearch('desk-search-toggle', 'desk-search');
+    bindSearch('mob-search-toggle',  'mob-search');
+  </script>
+ 
+</body>
+</html>

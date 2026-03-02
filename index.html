@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="shortcut icon" href="../images/flogo.png" type="images/x-icon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Montserrat:wght@200;300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <title>Food website</title>
+</head>
+<body>
+
+    <!-- ── OVERLAY ── -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ── SLIDE-IN SIDEBAR ── -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-logo">
+            <img src="./images/flogo.png" alt="Logo">
+            <span>FoodieHub</span>
+        </div>
+        <a href="index.html" class="active"><i class="fa-solid fa-house-chimney"></i> Home</a>
+        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+        <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
+        <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
+    </nav>
+
+    <!-- ── HEADER ── -->
+    <header>
+        <div class="header">
+
+            <!-- Logo (always visible, always left) -->
+            <div class="logo">
+                <img src="./images/flogo.png" alt="Logo">
+            </div>
+
+            <!-- Mobile-only: search + user icons + hamburger (all on the right) -->
+            <div class="headerbar">
+                <ul>
+                    <li>
+                        <i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i>
+                    </li>
+                    <div class="search" id="mob-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+                <!-- Hamburger sits inside headerbar so it's grouped on the right -->
+                <div class="bar" id="hamburger">
+                    <i class="fa-solid fa-bars"></i>
+                    <i class="fa-solid fa-xmark"></i>
+                </div>
+            </div>
+
+            <!-- Desktop nav -->
+            <div class="nav">
+                <ul>
+                    <a href="index.html"><li>Home</li></a>
+                    <a href="about.html"><li>About</li></a>
+                    <a href="foodmenu.html"><li>Food Menu</li></a>
+                    <a href="Booking.html"><li>Book Table</li></a>
+                </ul>
+            </div>
+
+            <!-- Desktop account icons -->
+            <div class="account">
+                <ul>
+                    <a href="#">
+                        <li><i class="fa-solid fa-house-chimney"></i></li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i>
+                        </li>
+                    </a>
+                    <div class="search" id="desk-search">
+                        <input type="search" placeholder="Search…">
+                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
+                    </div>
+                    <a href="#">
+                        <li><i class="fa-solid fa-user"></i></li>
+                    </a>
+                </ul>
+            </div>
+
+        </div>
+    </header>
+    <div class="home">
+        <div class="main_slide">
+            <div>
+                <h1>Enjoy<span>Delicious and healthy food</span> for your wellbeing</h1>
+                <p>
+                     At FoodieHub, we serve authentic Nigerian dishes made from fresh, locally sourced ingredients.
+                      From rich Jollof rice to flavorful soups and grilled specialties, 
+                     every meal is prepared with passion to give you a true taste of home.</p>
+                     <button class="red_btn">Visit now <i class="fa-solid fa-arrow-right-long"></i></button>
+            </div>
+       <div>
+        <img src="./images/foodhero.jpg" alt="">
+       </div>     
+        </div>
+        <div class="food-items">
+            <div class="item">
+                <div>
+                    <img src="images/food.jpg" alt="food item">
+                </div>
+                <h3>Jollof rice & chicken wings</h3>
+                <p>Enjoy our special Nigerian Jollof with chicken wings at an affordable price.</p>
+                <button class="white_btn">See more</button>
+            </div>
+             <div class="item">
+                <div>
+                    <img src="images/istockphoto-1448028228-612x612.jpg" alt="food item">
+                </div>
+                <h3>Jollof rice & chicken lap</h3>
+                <p>Our signature smoky Jollof rice served with a juicy, well-seasoned chicken lap grilled to perfection. 
+                    Packed with rich flavor and cooked in the traditional way for an authentic Nigerian taste.</p>
+                <button class="red_btn">See more</button>
+            </div>
+             <div class="item">
+                <div>
+                    <img src="images/herosec.jpg" alt="food item">
+                </div>
+                <h3>Jollof rice with vegetables with chicken</h3>
+                <p>A delicious combination of perfectly seasoned Jollof rice, fresh vegetables, and tender grilled chicken. 
+                    A complete and satisfying meal made to delight your taste buds.</p>
+                <button class="white_btn">See more</button>
+            </div>
+            
+        </div>
+        <div class="main_slide2">
+            <div class="foodimg">
+                <img src="images/images (2).jpg" alt="" width="500px">
+            </div>
+            <div class="question">
+                <div>
+                    <h2>Why people choose us?</h2>
+                </div>
+                <div>
+                    <div class="q-ans">
+                        <div>
+                            <img src="images/download (1).jpg" alt="" width="500px">
+                        </div>
+                        <div>
+                            <h4>Choose your favourite</h4>
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Modi, iusto.</p>
+                        </div>
+                    </div>
+                       <div class="q-ans">
+                        <div>
+                            <img src="images/pounded yam.jpg" alt="" width="500px">
+                        </div>
+                        <div>
+                            <h4>Choose your favourite</h4>
+                            <p>We offer a wide variety of authentic Nigerian meals, prepared daily with fresh
+                                 ingredients and traditional spices to give you unforgettable flavors.</p>
+                        </div>
+                    </div>
+                       <div class="q-ans">
+                        <div>
+                            <img src="images/peppersoup.jpg" alt="" width="500px">
+                        </div>
+                        <div>
+                            <h4>Choose your favourite</h4>
+                            <p>From our warm customer service to our clean and cozy environment,
+                                 we are committed to giving you a comfortable and memorable dining experience.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+    <div class="footer-container">
+
+        <!-- Column 1: Logo & Tagline -->
+        <div class="footer-col footer-brand">
+            <img src="./images/flogo.png" alt="FoodieHub Logo">
+            <span>FoodieHub</span>
+            <p>Bringing the rich flavours of Nigerian cuisine to your table. Made with love, served with pride.</p>
+            <div class="social-icons">
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            </div>
+        </div>
+
+        <!-- Column 2: Contact Info -->
+        <div class="footer-col">
+            <h3>Contact Us</h3>
+            <ul>
+                <li><i class="fa-solid fa-location-dot"></i> 12 Jollof Street, Lagos, Nigeria</li>
+                <li><i class="fa-solid fa-phone"></i> +234 801 234 5678</li>
+                <li><i class="fa-solid fa-envelope"></i> hello@foodiehub.com</li>
+            </ul>
+        </div>
+
+        <!-- Column 3: Opening Hours -->
+        <div class="footer-col">
+            <h3>Opening Hours</h3>
+            <ul>
+                <li><span>Monday – Friday</span> <span>9:00am – 10:00pm</span></li>
+                <li><span>Saturday</span> <span>10:00am – 11:00pm</span></li>
+                <li><span>Sunday</span> <span>12:00pm – 9:00pm</span></li>
+            </ul>
+        </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+        <p>&copy; 2025 FoodieHub. All rights reserved.</p>
+    </div>
+</footer>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger');
+        const sidebar   = document.getElementById('sidebar');
+        const overlay   = document.getElementById('overlay');
+
+        function openSidebar() {
+            sidebar.classList.add('open');
+            overlay.classList.add('open');
+            hamburger.classList.add('open');
+        }
+        function closeSidebar() {
+            sidebar.classList.remove('open');
+            overlay.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+
+        hamburger.addEventListener('click', () =>
+            sidebar.classList.contains('open') ? closeSidebar() : openSidebar()
+        );
+        overlay.addEventListener('click', closeSidebar);
+
+        // Search toggles
+        function bindSearch(toggleId, searchId) {
+            document.getElementById(toggleId).addEventListener('click', () => {
+                const el = document.getElementById(searchId);
+                el.classList.toggle('open');
+                if (el.classList.contains('open')) el.querySelector('input').focus();
+            });
+        }
+        bindSearch('desk-search-toggle', 'desk-search');
+        bindSearch('mob-search-toggle',  'mob-search');
+    </script>
+</body>
+</html>
