@@ -12,8 +12,6 @@
     height: 4rem;
     border-radius: 50%;
 }
-
-/* ── HEADER ── */
 .header {
     display: flex;
     justify-content: space-between;
@@ -69,9 +67,9 @@
     padding: 4px 5px;
     cursor: pointer;
 }
-.search.open { display: flex; }
-
-/* ── HAMBURGER BAR (hidden on desktop) ── */
+.search.open { 
+    display: flex; 
+}
 .bar {
     display: none;
     flex-direction: column;
@@ -80,17 +78,27 @@
     z-index: 200;
     margin-left: 10px;
 }
-.bar i { font-size: 22px; transition: color 0.2s; }
-.bar i:hover { color: rgb(107, 16, 107); }
-.bar .fa-xmark { display: none; }
-.bar.open .fa-bars  { display: none; }
-.bar.open .fa-xmark { display: block; }
+.bar i {
+     font-size: 22px;
+     transition: 
+     color 0.2s;
+}
+.bar i:hover {
+     color: rgb(107, 16, 107);
+}
+.bar .fa-xmark { 
+    display: none;
+ }
+.bar.open .fa-bars  { 
+    display: none;
+ }
+.bar.open .fa-xmark { 
+    display: block; 
+}
 .headerbar {
     display: none;
     align-items: center;
 }
-
-/* ── OVERLAY ── */
 .overlay {
     display: none;
     position: fixed;
@@ -99,9 +107,9 @@
     z-index: 150;
     transition: opacity 0.3s;
 }
-.overlay.open { display: block; }
-
-/* ── SIDEBAR ── */
+.overlay.open {
+     display: block; 
+    }
 .sidebar {
     position: fixed;
     top: 0;
@@ -117,7 +125,9 @@
     flex-direction: column;
     gap: 8px;
 }
-.sidebar.open { left: 0; }
+.sidebar.open { 
+    left: 0;
+ }
 
 .sidebar a {
     display: flex;
@@ -129,7 +139,7 @@
     font-size: 15px;
     font-weight: 600;
     color: #fff;
-    transition: background 0.2s, color 0.2s;
+    transition: 0.2s, color 0.2s;
 }
 .sidebar a i {
     color: #fff;
@@ -141,7 +151,9 @@
     background: rgba(255,255,255,0.2);
     color: rgb(107,16,107);
 }
-.sidebar a:hover i { color: rgb(107,16,107); }
+.sidebar a:hover i { 
+    color: rgb(107,16,107);
+ }
 
 .sidebar-logo {
     position: absolute;
@@ -220,8 +232,6 @@
     text-underline-offset: 10px;
     text-decoration-color: rgb(226, 99, 230);
 }
-
-/* Image side */
 .main_slide div:nth-child(2) {
     flex: 1 1 300px;
     display: flex;
@@ -237,8 +247,6 @@
     object-fit: cover;
     display: block;
 }
-
-/* ── Button ── */
 .red_btn {
     cursor: pointer;
     margin-top: 20px;
@@ -267,18 +275,12 @@
 .red_btn:hover i {
     color: blueviolet;
 }
-
-/* ════════════════════════════════
-   HERO — TABLET (max-width: 768px)
-════════════════════════════════ */
 @media only screen and (max-width: 768px) {
     .main_slide {
-        flex-direction: column; /* stack vertically */
+        flex-direction: column; 
     }
-
-    /* Image on top */
     .main_slide div:nth-child(2) {
-        order: -1;              /* pulls image above text */
+        order: -1;            
         padding-top: 30px;
         width: 100%;
     }
@@ -287,18 +289,12 @@
         max-width: 100%;
         border-radius: 10px;
     }
-
-    /* Text below */
     .main_slide div:nth-child(1) {
         font-size: 17px;
         width: 100%;
         padding-top: 10px;
     }
 }
-
-/* ════════════════════════════════
-   HERO — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .home {
         padding: 0 4vw 40px;
@@ -373,10 +369,6 @@
     width: 120px;
     line-height: 35px;
 }
-
-/* ════════════════════════════════
-   FOOD ITEMS — TABLET (max-width: 1024px)
-════════════════════════════════ */
 @media only screen and (max-width: 1024px) {
     .food-items {
         flex-direction: column;
@@ -399,10 +391,6 @@
         max-width: 300px;
     }
 }
-
-/* ════════════════════════════════
-   FOOD ITEMS — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .food-items {
         padding: 10px;
@@ -484,9 +472,6 @@
     margin-top: 10px;
     font-size: 13px;
 }
-/* ════════════════════════════════
-   MAIN SLIDE 2 — TABLET (max-width: 1024px)
-════════════════════════════════ */
 @media only screen and (max-width: 1024px) {
     .main_slide2 {
         flex-direction: column;
@@ -526,9 +511,6 @@
     }
 }
 
-/* ════════════════════════════════
-   MAIN SLIDE 2 — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .main_slide2 {
         margin: 30px 0;
@@ -568,11 +550,6 @@
         margin-top: 5px;
     }
 }
-
-/* ABOUT PAGE */
-/* ══════════════════════════════════
-   ABOUT PAGE
-══════════════════════════════════ */
 .about {
     background-color: rgb(107, 16, 107);
     padding: 0 7vw 60px;
@@ -580,13 +557,11 @@
 
 .about_header {
     display: flex;
-    flex-direction: row;          /* text left, image right */
+    flex-direction: row;          
     align-items: center;
     gap: 40px;
     padding-top: 40px;
 }
-
-/* Text side — left */
 .about_header div:nth-child(1) {
     flex: 1 1 300px;
 }
@@ -602,8 +577,6 @@
     color: rgb(242, 220, 228);
     line-height: 1.8;
 }
-
-/* Image side — right */
 .about_header div:nth-child(2) {
     flex: 1 1 300px;
     display: flex;
@@ -617,18 +590,12 @@
     border-radius: 12px;
     object-fit: cover;
 }
-
-/* ════════════════════════════════
-   ABOUT — TABLET (max-width: 1024px)
-════════════════════════════════ */
 @media only screen and (max-width: 1024px) {
     .about_header {
         flex-direction: column;
         padding-top: 30px;
         gap: 25px;
     }
-
-    /* Image on top */
     .about_header div:nth-child(2) {
         order: -1;
         width: 100%;
@@ -638,8 +605,6 @@
         max-width: 100%;
         border-radius: 10px;
     }
-
-    /* Text below */
     .about_header div:nth-child(1) {
         width: 100%;
     }
@@ -687,7 +652,7 @@
 }
 
 .chefs h2 {
-    width: 100%; /* forces heading onto its own full row */
+    width: 100%;
     text-align: center;
     font-size: 30px;
     font-weight: bold;
@@ -721,7 +686,7 @@
     height: 100%;
     object-fit: cover;
     display: block;
-    border-radius: 0; /* image fills the card top */
+    border-radius: 0; 
 }
 
 .single_chef h3 {
@@ -737,9 +702,7 @@
     padding: 0 14px 18px;
     margin-top: 6px;
     line-height: 1.6;
-}/* ════════════════════════════════
-   CHEFS — TABLET (max-width: 1024px)
-════════════════════════════════ */
+}
 @media only screen and (max-width: 1024px) {
     .chefs {
         gap: 25px;
@@ -750,7 +713,7 @@
         width: 70%;
         max-width: 500px;
         display: flex;
-        flex-direction: column; /* image on top, text below */
+        flex-direction: column; 
         align-items: center;
         text-align: center;
         border-radius: 16px;
@@ -758,7 +721,7 @@
 
     .single_chef div {
         height: 220px;
-        width: 100%; /* image fills full card width */
+        width: 100%; 
         min-width: unset;
         flex-shrink: unset;
         border-radius: 0;
@@ -781,9 +744,6 @@
     }
 }
 
-/* ════════════════════════════════
-   CHEFS — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .chefs {
         margin: 40px 0;
@@ -818,9 +778,7 @@
         padding: 0 14px 16px;
         line-height: 1.6;
     }
-}/* ══════════════════════════════════
-   STORY SECTION
-══════════════════════════════════ */
+}
 .story {
     margin: 70px 0;
     padding: 60px 20px;
@@ -830,7 +788,7 @@
 
 .story div {
     max-width: 750px;
-    margin: 0 auto; /* centers the column */
+    margin: 0 auto; 
 }
 
 .story h1 {
@@ -845,12 +803,9 @@
     font-size: 14px;
     line-height: 1.9;
     text-align: justify;
-    margin-right: 0; /* remove old margin */
+    margin-right: 0;
 }
 
-/* ════════════════════════════════
-   STORY — TABLET (max-width: 1024px)
-════════════════════════════════ */
 @media only screen and (max-width: 1024px) {
     .story {
         margin: 50px 0;
@@ -867,10 +822,6 @@
         line-height: 1.8;
     }
 }
-
-/* ════════════════════════════════
-   STORY — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .story {
         margin: 30px 0;
@@ -886,12 +837,10 @@
     .story p {
         font-size: 12px;
         line-height: 1.75;
-        text-align: left; /* justify can look odd on narrow phones */
+        text-align: left; 
     }
 }
-/* ══════════════════════════════════
-   FOOTER
-══════════════════════════════════ */
+
 .footer {
     background-color: rgb(73, 16, 73);
     padding: 60px 7vw 0;
@@ -906,8 +855,6 @@
     padding-bottom: 40px;
     border-bottom: 1px solid rgb(226, 99, 230);
 }
-
-/* ── Each column ── */
 .footer-col {
     flex: 1 1 200px;
 }
@@ -973,8 +920,6 @@
     line-height: 1.7;
     margin-bottom: 20px;
 }
-
-/* ── Social icons ── */
 .social-icons {
     display: flex;
     gap: 12px;
@@ -989,7 +934,7 @@
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(243, 22, 217, 0.4);
-    transition: background 0.2s, transform 0.2s;
+    transition: 0.2s, transform 0.2s;
 }
 
 .social-icons a i {
@@ -1006,7 +951,6 @@
     color: #fff;
 }
 
-/* ── Bottom bar ── */
 .footer-bottom {
     text-align: center;
     padding: 18px 0;
@@ -1060,10 +1004,7 @@
     }
 }
 
-
-  /* ══════════════════════════════════════
-       CSS VARIABLES
-    ══════════════════════════════════════ */
+  
     :root {
       --fm-bg:      #f7f5f0;
       --fm-surface: #ffffff;
@@ -1077,10 +1018,6 @@
       --fm-shadow:  0 2px 18px rgba(0,0,0,.07);
       --fm-trans:   .25s cubic-bezier(.4,0,.2,1);
     }
-
-    /* ══════════════════════════════════════
-       SECTION WRAPPER
-    ══════════════════════════════════════ */
     .food_menu {
       background: var(--fm-bg);
       padding: 3.5rem 2rem 5rem;
@@ -1091,9 +1028,7 @@
       margin: 0 auto;
     }
 
-    /* ══════════════════════════════════════
-       SECTION HEADING
-    ══════════════════════════════════════ */
+  
     .food_menu__heading {
       margin-bottom: 2.5rem;
     }
@@ -1117,20 +1052,13 @@
       color: var(--fm-muted);
       margin-top: .4rem;
     }
-
-    /* ══════════════════════════════════════
-       GRID
-    ══════════════════════════════════════ */
     .food_grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 1.5rem;
     }
 
-    /* ══════════════════════════════════════
-       FOOD CARD
-    ══════════════════════════════════════ */
-    .food {
+      .food {
       background: var(--fm-surface);
       border-radius: var(--fm-radius);
       border: 1px solid var(--fm-border);
@@ -1146,7 +1074,7 @@
       box-shadow: 0 12px 36px rgba(0,0,0,.12);
     }
 
-    /* ── Image ── */
+   
     .food__img-wrap {
       position: relative;
       overflow: hidden;
@@ -1166,8 +1094,7 @@
       transform: scale(1.06);
     }
 
-    /* ── Badge ── */
-    .food__badge {
+       .food__badge {
       position: absolute;
       top: 10px;
       left: 10px;
@@ -1182,7 +1109,7 @@
       border-radius: 100px;
     }
 
-    /* ── Body ── */
+   
     .food__body {
       padding: 1rem 1.2rem;
       display: flex;
@@ -1215,7 +1142,7 @@
       flex: 1;
     }
 
-    /* ── Stars ── */
+    
     .food__stars {
       display: flex;
       align-items: center;
@@ -1239,8 +1166,7 @@
       margin-left: .2rem;
     }
 
-    /* ── Footer ── */
-    .food__footer {
+       .food__footer {
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -1266,7 +1192,6 @@
       margin-top: 2px;
     }
 
-    /* ── Add to Cart Button (pure CSS, no JS) ── */
     .food__btn {
       display: inline-flex;
       align-items: center;
@@ -1280,7 +1205,7 @@
       font-size: .82rem;
       font-weight: 600;
       white-space: nowrap;
-      transition: background var(--fm-trans), transform .15s;
+      transition: var(--fm-trans), transform .15s;
       cursor: pointer;
       border: none;
     }
@@ -1296,19 +1221,11 @@
     .food__btn i {
       font-size: .78rem;
     }
-
-    /* ══════════════════════════════════════
-       RESPONSIVE — 3 columns @ 1100px
-    ══════════════════════════════════════ */
     @media (max-width: 1100px) {
       .food_grid {
         grid-template-columns: repeat(3, 1fr);
       }
     }
-
-    /* ══════════════════════════════════════
-       RESPONSIVE — 2 columns @ 768px
-    ══════════════════════════════════════ */
     @media (max-width: 768px) {
       .food_menu {
         padding: 2.5rem 1.2rem 4rem;
@@ -1332,11 +1249,6 @@
         font-size: .78rem;
       }
     }
-
-    /* ══════════════════════════════════════
-       RESPONSIVE — 2 columns @ 480px
-       (tighter, hide desc)
-    ══════════════════════════════════════ */
     @media (max-width: 480px) {
       .food_menu {
         padding: 2rem .9rem 3rem;
@@ -1371,9 +1283,6 @@
       }
     }
 
-    /* ══════════════════════════════════════
-       RESPONSIVE — 1 column @ 340px
-    ══════════════════════════════════════ */
     @media (max-width: 340px) {
       .food_grid {
         grid-template-columns: 1fr;
@@ -1383,9 +1292,6 @@
         display: block;
       }
     }
-    /* ══════════════════════════════════
-   BOOKING SECTION
-══════════════════════════════════ */
 .booking {
     padding: 60px 7vw;
     min-height: calc(100vh - 80px);
@@ -1396,7 +1302,6 @@
     overflow: hidden;
 }
 
-/* ── Background image ── */
 .booking::before {
     content: '';
     position: absolute;
@@ -1406,8 +1311,6 @@
     background-position: center;
     z-index: 0;
 }
-
-/* ── Dark overlay ── */
 .booking::after {
     content: '';
     position: absolute;
@@ -1416,7 +1319,6 @@
     z-index: 1;
 }
 
-/* ── Form card ── */
 .booking-container {
     position: relative;
     z-index: 2;
@@ -1427,8 +1329,6 @@
     max-width: 780px;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
 }
-
-/* ── Heading ── */
 .booking-header {
     text-align: center;
     margin-bottom: 40px;
@@ -1445,8 +1345,6 @@
     color: rgb(242, 220, 228);
     line-height: 1.7;
 }
-
-/* ── Form rows ── */
 .form-row {
     display: flex;
     gap: 20px;
@@ -1460,7 +1358,7 @@
     gap: 8px;
 }
 
-/* ── Labels ── */
+
 .form-group label {
     font-size: 13px;
     font-weight: bold;
@@ -1474,8 +1372,6 @@
     color: rgb(243, 22, 217);
     font-size: 13px;
 }
-
-/* ── Inputs & Select ── */
 .form-group input,
 .form-group select {
     padding: 12px 15px;
@@ -1485,7 +1381,7 @@
     color: #fff;
     font-size: 13px;
     outline: none;
-    transition: border 0.2s, background 0.2s;
+    transition: border 0.2s,  0.2s;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -1509,7 +1405,7 @@
     color: #fff;
 }
 
-/* ── Submit button ── */
+
 .booking-btn {
     width: 100%;
     padding: 15px;
@@ -1521,7 +1417,7 @@
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: background 0.2s, box-shadow 0.2s, transform 0.2s;
+    transition:  0.2s, box-shadow 0.2s, transform 0.2s;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1544,9 +1440,6 @@
     transform: translateX(5px);
 }
 
-/* ════════════════════════════════
-   BOOKING — TABLET (max-width: 1024px)
-════════════════════════════════ */
 @media only screen and (max-width: 1024px) {
     .booking-container {
         padding: 40px 35px;
@@ -1557,9 +1450,6 @@
     }
 }
 
-/* ════════════════════════════════
-   BOOKING — PHONE (max-width: 480px)
-════════════════════════════════ */
 @media only screen and (max-width: 480px) {
     .booking {
         padding: 40px 4vw;
