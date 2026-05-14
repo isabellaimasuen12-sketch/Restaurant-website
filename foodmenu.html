@@ -9,352 +9,974 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="stylesheet" href="style.css">
- 
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    .toast-container {
+      position: fixed;
+      bottom: 1.5rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: .5rem;
+      pointer-events: none;
+    }
+    .toast {
+      background: #1a1a18;
+      color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .85rem;
+      font-weight: 500;
+      padding: .65rem 1.2rem;
+      border-radius: 100px;
+      display: flex;
+      align-items: center;
+      gap: .55rem;
+      box-shadow: 0 8px 24px rgba(0,0,0,.22);
+      animation: toastIn .3s cubic-bezier(.4,0,.2,1) forwards;
+      pointer-events: auto;
+      white-space: nowrap;
+    }
+    .toast.removing { animation: toastOut .3s cubic-bezier(.4,0,.2,1) forwards; }
+    .toast i { color: #c8602a; font-size: .8rem; }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(12px) scale(.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    @keyframes toastOut {
+      from { opacity: 1; transform: translateY(0) scale(1); }
+      to   { opacity: 0; transform: translateY(12px) scale(.95); }
+    }
+
+    .popup-stack {
+      position: fixed;
+      bottom: 5.5rem;
+      right: 1.5rem;
+      z-index: 9990;
+      display: flex;
+      flex-direction: column-reverse;
+      gap: .65rem;
+      pointer-events: none;
+      max-width: 300px;
+    }
+    .popup-card {
+      background: #fff;
+      border: 1px solid #e5e0d8;
+      border-radius: 14px;
+      box-shadow: 0 12px 36px rgba(0,0,0,.14);
+      display: flex;
+      align-items: center;
+      gap: .85rem;
+      padding: .75rem 1rem;
+      pointer-events: auto;
+      animation: popupIn .35s cubic-bezier(.34,1.56,.64,1) forwards;
+      position: relative;
+      overflow: hidden;
+    }
+    .popup-card::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: #c8602a;
+      border-radius: 4px 0 0 4px;
+    }
+    .popup-card.removing { animation: popupOut .28s cubic-bezier(.4,0,.2,1) forwards; }
+    .popup-card__icon {
+      width: 52px; height: 52px;
+      background: #fdf3ec;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      color: #c8602a;
+      font-size: 1rem;
+      overflow: hidden;
+    }
+    .popup-card__icon img { width: 100%; height: 100%; object-fit: cover; border-radius: 10px; }
+    .popup-card__body { flex: 1; min-width: 0; }
+    .popup-card__label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .68rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .07em;
+      color: #c8602a; margin-bottom: 2px;
+    }
+    .popup-card__name {
+      font-family: 'DM Serif Display', serif;
+      font-size: .95rem; color: #1a1a18; line-height: 1.25;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .popup-card__meta {
+      font-family: 'DM Sans', sans-serif;
+      font-size: .75rem; color: #7a7870; margin-top: 2px;
+      display: flex; align-items: center; gap: .35rem;
+    }
+    .popup-card__meta i { font-size: .65rem; color: #c8602a; }
+    .popup-card__dismiss {
+      background: none; border: none; color: #c0bbb5;
+      cursor: pointer; font-size: .75rem; padding: .2rem;
+      flex-shrink: 0; border-radius: 4px; transition: color .15s;
+    }
+    .popup-card__dismiss:hover { color: #1a1a18; }
+    .popup-card__progress {
+      position: absolute; bottom: 0; left: 0;
+      height: 2px; background: #c8602a; opacity: .35;
+      border-radius: 0 0 14px 14px;
+      animation: progressShrink 3s linear forwards;
+    }
+    @keyframes progressShrink { from { width: 100%; } to { width: 0%; } }
+    @keyframes popupIn {
+      from { opacity: 0; transform: translateX(30px) scale(.95); }
+      to   { opacity: 1; transform: translateX(0) scale(1); }
+    }
+    @keyframes popupOut {
+      from { opacity: 1; transform: translateX(0) scale(1); }
+      to   { opacity: 0; transform: translateX(30px) scale(.95); }
+    }
+    @media (max-width: 480px) {
+      .popup-stack { right: .75rem; bottom: 5rem; max-width: calc(100vw - 1.5rem); }
+    }
+
+    /* FOOD DETAIL MODAL */
+    .fdm-overlay {
+      position: fixed; inset: 0;
+      background: rgba(10,8,6,.72);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      z-index: 5000;
+      display: flex; align-items: center; justify-content: center;
+      padding: 1.5rem;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .fdm-overlay.open { opacity: 1; pointer-events: auto; }
+    .fdm {
+      background: #fff; border-radius: 22px;
+      width: 100%; max-width: 780px; max-height: 90vh;
+      overflow: hidden; display: flex; flex-direction: column;
+      box-shadow: 0 32px 80px rgba(0,0,0,.35);
+      transform: translateY(24px) scale(.97);
+      transition: transform .35s cubic-bezier(.34,1.2,.64,1), opacity .3s;
+      opacity: 0;
+    }
+    .fdm-overlay.open .fdm { transform: translateY(0) scale(1); opacity: 1; }
+    .fdm__hero { position: relative; height: 260px; flex-shrink: 0; overflow: hidden; background: #f0ede8; }
+    .fdm__hero img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .fdm__hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.55) 0%, transparent 55%);
+    }
+    .fdm__badge {
+      position: absolute; top: 14px; left: 14px;
+      background: #c8602a; color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .68rem; font-weight: 700;
+      letter-spacing: .07em; text-transform: uppercase;
+      padding: .28rem .75rem; border-radius: 100px;
+    }
+    .fdm__close {
+      position: absolute; top: 14px; right: 14px;
+      width: 36px; height: 36px; border-radius: 50%;
+      background: rgba(255,255,255,.2); backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,.35);
+      color: #fff; font-size: .9rem; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .2s;
+    }
+    .fdm__close:hover { background: rgba(255,255,255,.38); }
+    .fdm__hero-title { position: absolute; bottom: 16px; left: 20px; right: 20px; }
+    .fdm__hero-cat {
+      font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 600;
+      text-transform: uppercase; letter-spacing: .09em;
+      color: rgba(255,255,255,.75); margin-bottom: 4px;
+    }
+    .fdm__hero-name {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.3rem, 4vw, 1.75rem); color: #fff; line-height: 1.15;
+    }
+    .fdm__body {
+      overflow-y: auto; padding: 1.5rem 1.75rem 2rem;
+      flex: 1; display: flex; flex-direction: column; gap: 1.4rem;
+    }
+    .fdm__meta { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem; }
+    .fdm__stars { display: flex; align-items: center; gap: 4px; }
+    .fdm__stars i { font-size: .8rem; color: #f0a500; }
+    .fdm__stars i.fa-regular { color: #e5e0d8; }
+    .fdm__stars-count { font-family: 'DM Sans', sans-serif; font-size: .8rem; color: #7a7870; margin-left: .3rem; }
+    .fdm__price { font-family: 'DM Serif Display', serif; font-size: 1.55rem; color: #c8602a; line-height: 1; }
+    .fdm__price small { font-family: 'DM Sans', sans-serif; font-size: .7rem; color: #7a7870; font-weight: 400; margin-left: .2rem; }
+    .fdm__desc-label {
+      font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .09em; color: #c8602a; margin-bottom: .45rem;
+    }
+    .fdm__desc-text { font-family: 'DM Sans', sans-serif; font-size: .9rem; color: #4a4840; line-height: 1.75; }
+    .fdm__nutrition { background: #f7f5f0; border-radius: 14px; padding: 1.1rem 1.25rem; }
+    .fdm__nutrition-title {
+      font-family: 'DM Sans', sans-serif; font-size: .7rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .09em; color: #7a7870;
+      margin-bottom: .85rem; display: flex; align-items: center; gap: .4rem;
+    }
+    .fdm__nutrition-title i { color: #c8602a; }
+    .fdm__nutrition-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: .65rem; }
+    .fdm__nut-item { background: #fff; border-radius: 10px; padding: .7rem .5rem; text-align: center; border: 1px solid #e5e0d8; }
+    .fdm__nut-value { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: #1a1a18; line-height: 1; }
+    .fdm__nut-label { font-family: 'DM Sans', sans-serif; font-size: .65rem; color: #7a7870; margin-top: 3px; text-transform: uppercase; letter-spacing: .05em; }
+    .fdm__footer { padding: 1rem 1.75rem 1.5rem; border-top: 1px solid #e5e0d8; flex-shrink: 0; }
+    .fdm__add-btn {
+      width: 100%; background: #1a1a18; color: #fff; border: none;
+      border-radius: 12px; padding: .95rem 1.5rem;
+      font-family: 'DM Sans', sans-serif; font-size: .92rem; font-weight: 600;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      gap: .6rem; transition: background .2s, transform .15s;
+    }
+    .fdm__add-btn:hover { background: #c8602a; }
+    .fdm__add-btn:active { transform: scale(.98); }
+    .fdm__add-btn.added { background: #2d7a2d; }
+    .food { cursor: pointer; }
+    @media (max-width: 600px) {
+      .fdm__hero { height: 200px; }
+      .fdm__body { padding: 1.2rem 1.2rem 1.5rem; }
+      .fdm__footer { padding: .85rem 1.2rem 1.2rem; }
+      .fdm__nutrition-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* CART FAB */
+    .cart-fab {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: #c8602a; color: #fff; border: none;
+      border-radius: 50%; width: 58px; height: 58px;
+      font-size: 1.3rem; cursor: pointer;
+      box-shadow: 0 6px 22px rgba(200,96,42,.45);
+      z-index: 1100; display: flex; align-items: center; justify-content: center;
+      transition: transform .2s, background .2s;
+    }
+    .cart-fab:hover { background: #b0511f; transform: scale(1.07); }
+    .cart-fab:active { transform: scale(.95); }
+    .cart-fab__badge {
+      position: absolute; top: -4px; right: -4px;
+      background: #1a1a18; color: #fff;
+      font-family: 'DM Sans', sans-serif;
+      font-size: .65rem; font-weight: 700;
+      min-width: 20px; height: 20px;
+      border-radius: 100px; display: none;
+      align-items: center; justify-content: center; padding: 0 4px;
+    }
+    .cart-fab__badge.visible { display: flex; }
+
+    /* CART DRAWER */
+    .cart-overlay {
+      position: fixed; inset: 0; background: rgba(0,0,0,.35);
+      z-index: 1200; opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .cart-overlay.open { opacity: 1; pointer-events: auto; }
+    .cart-drawer {
+      position: fixed; top: 0; right: 0; height: 100%;
+      width: min(420px, 100vw); background: #f7f5f0;
+      z-index: 1300; display: flex; flex-direction: column;
+      transform: translateX(100%);
+      transition: transform .35s cubic-bezier(.4,0,.2,1);
+      box-shadow: -8px 0 40px rgba(0,0,0,.12);
+    }
+    .cart-drawer.open { transform: translateX(0); }
+    .cart-drawer__header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.4rem 1.5rem 1.2rem; border-bottom: 1px solid #e5e0d8; background: #fff;
+    }
+    .cart-drawer__header h2 { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: #1a1a18; display: flex; align-items: center; gap: .5rem; }
+    .cart-drawer__header h2 i { color: #c8602a; font-size: 1.1rem; }
+    .cart-close { background: none; border: none; font-size: 1.15rem; color: #7a7870; cursor: pointer; padding: .3rem; border-radius: 6px; transition: color .2s, background .2s; }
+    .cart-close:hover { color: #1a1a18; background: #f0ede8; }
+    .cart-items { flex: 1; overflow-y: auto; padding: 1rem 1.5rem; display: flex; flex-direction: column; gap: .85rem; }
+    .cart-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; gap: .75rem; color: #7a7870; }
+    .cart-empty i { font-size: 2.5rem; color: #e5e0d8; }
+    .cart-empty p { font-family: 'DM Sans', sans-serif; font-size: .9rem; }
+    .cart-item { background: #fff; border: 1px solid #e5e0d8; border-radius: 12px; padding: .9rem 1rem; display: flex; align-items: center; gap: .9rem; animation: itemIn .25s ease; }
+    @keyframes itemIn { from { opacity: 0; transform: translateX(10px); } to { opacity: 1; transform: translateX(0); } }
+    .cart-item__name { flex: 1; font-family: 'DM Serif Display', serif; font-size: .95rem; color: #1a1a18; line-height: 1.3; }
+    .cart-item__unit { font-family: 'DM Sans', sans-serif; font-size: .72rem; color: #7a7870; font-weight: 400; margin-top: 2px; }
+    .cart-item__qty { display: flex; align-items: center; gap: .4rem; }
+    .qty-btn { background: #f7f5f0; border: 1px solid #e5e0d8; border-radius: 6px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: .75rem; cursor: pointer; color: #1a1a18; transition: background .15s, border-color .15s; }
+    .qty-btn:hover { background: #c8602a; border-color: #c8602a; color: #fff; }
+    .qty-btn.minus:hover { background: #e5e0d8; border-color: #e5e0d8; color: #1a1a18; }
+    .qty-value { font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 600; color: #1a1a18; min-width: 18px; text-align: center; }
+    .cart-item__price { font-family: 'DM Serif Display', serif; font-size: 1rem; color: #c8602a; min-width: 60px; text-align: right; }
+    .cart-item__remove { background: none; border: none; color: #c0bbb5; cursor: pointer; font-size: .8rem; padding: .2rem; border-radius: 4px; transition: color .2s; }
+    .cart-item__remove:hover { color: #c8602a; }
+    .cart-footer { border-top: 1px solid #e5e0d8; padding: 1.2rem 1.5rem 1.5rem; background: #fff; display: flex; flex-direction: column; gap: .85rem; }
+    .cart-total { display: flex; justify-content: space-between; align-items: baseline; }
+    .cart-total__label { font-family: 'DM Sans', sans-serif; font-size: .85rem; color: #7a7870; font-weight: 500; }
+    .cart-total__amount { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: #1a1a18; }
+    .cart-checkout { background: #c8602a; color: #fff; border: none; border-radius: 10px; padding: .85rem 1.5rem; font-family: 'DM Sans', sans-serif; font-size: .9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: .5rem; transition: background .2s, transform .15s; }
+    .cart-checkout:hover { background: #b0511f; }
+    .cart-checkout:active { transform: scale(.97); }
+    .cart-checkout:disabled { background: #e5e0d8; color: #aaa; cursor: not-allowed; }
+    .cart-clear { background: none; border: 1px solid #e5e0d8; border-radius: 10px; padding: .65rem; font-family: 'DM Sans', sans-serif; font-size: .8rem; color: #7a7870; cursor: pointer; transition: border-color .2s, color .2s; text-align: center; }
+    .cart-clear:hover { border-color: #c8602a; color: #c8602a; }
+  </style>
 </head>
 <body>
 
-  <!-- OVERLAY -->
   <div class="overlay" id="overlay"></div>
-   <!-- ── SLIDE-IN SIDEBAR ── -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-logo">
-            <img src="./images/flogo.png" alt="Logo">
-            <span>FoodieHub</span>
+  <nav class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <img src="./images/flogo.png" alt="Logo">
+      <span>FoodieHub</span>
+    </div>
+    <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
+    <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
+    <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
+    <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
+  </nav>
+
+  <header>
+    <div class="header">
+      <div class="logo"><img src="./images/flogo.png" alt="Logo"></div>
+      <div class="headerbar">
+        <ul>
+          <li><i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i></li>
+          <div class="search" id="mob-search">
+            <input type="search" placeholder="Search…">
+            <i class="fa-solid fa-magnifying-glass srchicon"></i>
+          </div>
+          <a href="#"><li><i class="fa-solid fa-user"></i></li></a>
+        </ul>
+        <div class="bar" id="hamburger">
+          <i class="fa-solid fa-bars"></i>
+          <i class="fa-solid fa-xmark"></i>
         </div>
-        <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
-        <a href="about.html"><i class="fa-solid fa-circle-info"></i> About</a>
-        <a href="foodmenu.html"><i class="fa-solid fa-utensils"></i> Food Menu</a>
-        <a href="Booking.html"><i class="fa-solid fa-calendar-check"></i> Book Table</a>
-    </nav>
+      </div>
+      <div class="nav">
+        <ul>
+          <a href="index.html"><li>Home</li></a>
+          <a href="about.html"><li>About</li></a>
+          <a href="foodmenu.html"><li>Food Menu</li></a>
+          <a href="Booking.html"><li>Book Table</li></a>
+        </ul>
+      </div>
+      <div class="account">
+        <ul>
+          <a href="#"><li><i class="fa-solid fa-house-chimney"></i></li></a>
+          <a href="#"><li><i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i></li></a>
+          <div class="search" id="desk-search">
+            <input type="search" placeholder="Search…">
+            <i class="fa-solid fa-magnifying-glass srchicon"></i>
+          </div>
+          <a href="#"><li><i class="fa-solid fa-user"></i></li></a>
+        </ul>
+      </div>
+    </div>
+  </header>
 
-
- 
-    <header>
-        <div class="header">
-            <div class="logo">
-                <img src="./images/flogo.png" alt="Logo">
-            </div>
-
-            <div class="headerbar">
-                <ul>
-                    <li>
-                        <i class="fa-solid fa-magnifying-glass searchicon" id="mob-search-toggle"></i>
-                    </li>
-                    <div class="search" id="mob-search">
-                        <input type="search" placeholder="Search…">
-                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
-                    </div>
-                    <a href="#">
-                        <li><i class="fa-solid fa-user"></i></li>
-                    </a>
-                </ul>
-                               <div class="bar" id="hamburger">
-                    <i class="fa-solid fa-bars"></i>
-                    <i class="fa-solid fa-xmark"></i>
-                </div>
-            </div>
-            <div class="nav">
-                <ul>
-                    <a href="index.html"><li>Home</li></a>
-                    <a href="about.html"><li>About</li></a>
-                    <a href="foodmenu.html"><li>Food Menu</li></a>
-                    <a href="Booking.html"><li>Book Table</li></a>
-                </ul>
-            </div>
-            <div class="account">
-                <ul>
-                    <a href="#">
-                        <li><i class="fa-solid fa-house-chimney"></i></li>
-                    </a>
-                    <a href="#">
-                        <li>
-                            <i class="fa-solid fa-magnifying-glass searchicon" id="desk-search-toggle"></i>
-                        </li>
-                    </a>
-                    <div class="search" id="desk-search">
-                        <input type="search" placeholder="Search…">
-                        <i class="fa-solid fa-magnifying-glass srchicon"></i>
-                    </div>
-                    <a href="#">
-                        <li><i class="fa-solid fa-user"></i></li>
-                    </a>
-                </ul>
-            </div>
-
-        </div>
-    </header>
- 
   <section class="food_menu">
     <div class="food_menu__inner">
-
       <div class="food_menu__heading">
         <h1>Our <em>Menu</em></h1>
         <p>Freshly made, honestly priced — discover your next favourite dish.</p>
       </div>
 
-      
       <div class="food_grid">
 
-        <div class="food">
+        <!-- AMALA & EWEDU -->
+        <div class="food" data-modal data-name="Amala & Ewedu Soup" data-category="Soups" data-img="images/amala.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A beloved Yoruba classic — silky yam flour swallow carefully worked to a smooth, dark finish. Paired with a vibrant Ewedu soup made from blended jute leaves and finished with a rich beletede stew loaded with assorted meats, stockfish, and crayfish. Every spoonful is deeply comforting and unmistakably Nigerian." data-cal="520" data-protein="28g" data-carbs="68g" data-fat="14g">
           <div class="food__img-wrap">
-            <img src="images/amala.jpg" alt="Amala and Ewedu Soup">
+            <img src="images/amala.jpg" alt="Amala and Ewedu Soup" loading="lazy">
             <span class="food__badge">Popular</span>
           </div>
           <div class="food__body">
             <span class="food__category">Soups</span>
             <h3 class="food__name">Amala & Ewedu Soup</h3>
-            <p class="food__desc">Silky yam flour swallow paired with fresh ewedu in a rich beletede stew.</p>
+            <p class="food__desc">Silky dark yam swallow served with jute-leaf ewedu and a hearty beletede stew.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(128)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,500 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Amala & Ewedu Soup" data-price="2500" data-img="images/amala.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
-         <div class="food">
+
+        <!-- NKWOBI -->
+        <div class="food" data-modal data-name="Nkwobi" data-category="Soups" data-img="images/NKWOBI.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A fiery, deeply satisfying Igbo delicacy made from slow-cooked cow foot tossed in a bold, spiced palm oil sauce infused with ugba (oil bean seeds), utazi leaves, and ground crayfish. Served warm as a starter or main, Nkwobi is the taste of celebration — traditionally enjoyed at parties and gatherings across the South-East." data-cal="480" data-protein="34g" data-carbs="18g" data-fat="28g">
           <div class="food__img-wrap">
-            <img src="images/NKWOBI.jpg" alt="Nkwobi">
+            <img src="images/NKWOBI.jpg" alt="Nkwobi" loading="lazy">
             <span class="food__badge">Popular</span>
           </div>
           <div class="food__body">
             <span class="food__category">Soups</span>
             <h3 class="food__name">Nkwobi</h3>
-            <p class="food__desc">Spicy cow foot delicacy, a popular,flavorful igbo traditional starter.</p>
+            <p class="food__desc">Tender cow foot slow-cooked in a spiced palm oil sauce with ugba and utazi leaves.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(128)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,500 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Nkwobi" data-price="2500" data-img="images/NKWOBI.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
-         <div class="food">
+
+        <!-- TEA AND SANDWICH -->
+        <div class="food" data-modal data-name="Tea and Sandwich" data-category="Breakfast" data-img="images/breakfast.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A satisfying breakfast classic — thick slices of toasted bread generously layered with fried egg, melted cheese, crisp lettuce, tomato, and a light spread of butter. Served alongside a steaming cup of your choice of tea. Simple, wholesome, and the perfect way to start your morning at FoodieHub." data-cal="420" data-protein="18g" data-carbs="52g" data-fat="16g">
           <div class="food__img-wrap">
-            <img src="images/bllack soup.jpg" alt="Black soup and starch">
+            <img src="images/breakfast.jpg" alt="Tea and Sandwich" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Breakfast</span>
+            <h3 class="food__name">Tea and Sandwich</h3>
+            <p class="food__desc">Toasted bread layered with egg, cheese and veggies, paired with a warm cup of tea.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Tea and Sandwich" data-price="2500" data-img="images/breakfast.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- AKARA AND PAP -->
+        <div class="food" data-modal data-name="Akara and Pap" data-category="Breakfast" data-img="images/breakf.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A beloved Nigerian breakfast duo — golden, crispy akara balls made from blended seasoned black-eyed peas, deep-fried to a light crunch on the outside with a fluffy, savoury centre. Paired with smooth, silky pap (ogi) made from fermented corn. Comforting, nourishing, and deeply nostalgic." data-cal="360" data-protein="16g" data-carbs="48g" data-fat="12g">
+          <div class="food__img-wrap">
+            <img src="images/breakf.jpg" alt="Akara and Pap" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Breakfast</span>
+            <h3 class="food__name">Akara and Pap</h3>
+            <p class="food__desc">Crispy golden bean cake fritters served with smooth, warm fermented corn porridge.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Akara and Pap" data-price="2500" data-img="images/breakf.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- STRAWBERRY ICE CREAM -->
+        <div class="food" data-modal data-name="Strawberry Ice Cream" data-category="Snacks" data-img="images/strawberry.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A creamy, vibrant scoop of strawberry ice cream made with real fruit puree and fresh cream. Sweet, slightly tangy, and utterly refreshing — served in a chilled cup or waffle cone. The perfect cool-down treat for a warm Lagos afternoon or a sweet finish to any meal." data-cal="220" data-protein="4g" data-carbs="32g" data-fat="10g">
+          <div class="food__img-wrap">
+            <img src="images/strawberry.jpg" alt="Strawberry Ice Cream" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Strawberry Ice Cream</h3>
+            <p class="food__desc">Creamy real-fruit strawberry ice cream — sweet, tangy, and utterly refreshing.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Strawberry Ice Cream" data-price="2500" data-img="images/strawberry.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- CRISPY CHIN CHIN -->
+        <div class="food" data-modal data-name="Crispy Chin Chin" data-category="Snacks" data-img="images/chinchin.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A Nigerian party favourite and beloved everyday snack — small, crunchy morsels of fried dough made from a lightly sweetened, well-seasoned batter. Golden, crumbly, and completely addictive. Our chin chin is made fresh in small batches, giving it that perfect snap and home-style flavour you can't stop reaching for." data-cal="310" data-protein="6g" data-carbs="44g" data-fat="13g">
+          <div class="food__img-wrap">
+            <img src="images/chinchin.jpg" alt="Crispy Chin Chin" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Crispy Chin Chin</h3>
+            <p class="food__desc">Golden fried dough bites — crunchy, lightly sweetened, and made fresh in small batches.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Crispy Chin Chin" data-price="2500" data-img="images/chinchin.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- BANGA AND STARCH -->
+        <div class="food" data-modal data-name="Banga and Starch" data-category="Soups" data-img="images/banga.jpg" data-badge="Popular" data-price="5500" data-stars="4.5" data-rating="128" data-desc="A rich, aromatic Delta State classic — Banga soup is slow-simmered from fresh palm fruit extract, deeply flavoured with dried fish, assorted meats, and an essential blend of traditional spices including oburunbebe stick and beletede. Served with smooth, stretchy cassava starch. Deeply satisfying and unmistakably Delta." data-cal="590" data-protein="32g" data-carbs="70g" data-fat="22g">
+          <div class="food__img-wrap">
+            <img src="images/banga.jpg" alt="Banga and Starch" loading="lazy">
             <span class="food__badge">Popular</span>
           </div>
           <div class="food__body">
             <span class="food__category">Soups</span>
-            <h3 class="food__name">Black soup and starch</h3>
-            <p class="food__desc">Edo delicacy,rich dark soup,paired with soft cassava swallow.</p>
+            <h3 class="food__name">Banga and Starch</h3>
+            <p class="food__desc">Aromatic Delta palm fruit soup with assorted meats, served with stretchy cassava starch.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦5,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Banga and Starch" data-price="5500" data-img="images/banga.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- CRISPY PLANTAIN CHIPS -->
+        <div class="food" data-modal data-name="Crispy Plantain Chips" data-category="Snacks" data-img="images/chips.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="Thinly sliced unripe plantain, seasoned with a light sprinkle of salt and a touch of pepper, then fried to a satisfying golden crisp. Each chip is light, crunchy, and full of natural plantain flavour. A healthier, more flavourful alternative to regular crisps — great as a snack or a side." data-cal="190" data-protein="2g" data-carbs="28g" data-fat="9g">
+          <div class="food__img-wrap">
+            <img src="images/chips.jpg" alt="Crispy Plantain Chips" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Crispy Plantain Chips</h3>
+            <p class="food__desc">Thinly sliced, salted unripe plantain fried to a light, satisfying golden crisp.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(128)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,500 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Crispy Plantain Chips" data-price="2500" data-img="images/chips.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
-        </div> 
-        <div class="food">
+        </div>
+
+        <!-- ROASTED PLANTAIN AND VEGETABLES -->
+        <div class="food" data-modal data-name="Roasted Plantain and Vegetables" data-category="Snacks" data-img="images/bole.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="Bole — roasted plantain as it's known in Rivers State — charred over open flames until the skin is dark and the inside is tender, sweet, and smoky. Served alongside a colourful mix of lightly seasoned grilled vegetables. A simple, wholesome, and deeply satisfying street-food experience." data-cal="290" data-protein="4g" data-carbs="54g" data-fat="8g">
           <div class="food__img-wrap">
-            <img src="images/OKPA.jpg" alt="Okpa">
+            <img src="images/bole.jpg" alt="Roasted Plantain and Vegetables" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Roasted Plantain and Vegetables</h3>
+            <p class="food__desc">Smoky open-flame roasted plantain served with lightly seasoned grilled vegetables.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Roasted Plantain and Vegetables" data-price="2500" data-img="images/bole.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- FRIED POTATO AND KETCHUP -->
+        <div class="food" data-modal data-name="Fried Potato and Ketchup" data-category="Breakfast" data-img="images/potato.jpg" data-badge="Popular" data-price="6500" data-stars="4.5" data-rating="128" data-desc="Thick-cut Irish potatoes, fried to a perfectly crisp golden exterior while staying fluffy and soft on the inside. Seasoned with a blend of spices and served hot alongside a generous side of rich tomato ketchup for dipping. A crowd-pleasing comfort dish that works any time of day." data-cal="380" data-protein="6g" data-carbs="58g" data-fat="16g">
+          <div class="food__img-wrap">
+            <img src="images/potato.jpg" alt="Fried Potato and Ketchup" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Breakfast</span>
+            <h3 class="food__name">Fried Potato and Ketchup</h3>
+            <p class="food__desc">Thick-cut crispy fried potatoes seasoned and served hot with rich tomato ketchup.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦6,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Fried Potato and Ketchup" data-price="6500" data-img="images/potato.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- CAKE -->
+        <div class="food" data-modal data-name="Celebration Cake" data-category="Celebration" data-img="images/cake.jpg" data-badge="Popular" data-price="45000" data-stars="4.5" data-rating="128" data-desc="A showstopping custom celebration cake — moist, layered sponge filled with a choice of flavoured cream and jam, elegantly decorated to suit any occasion. Whether it's a birthday, anniversary, graduation, or corporate event, our cakes are baked fresh to order and crafted to make your celebration unforgettable." data-cal="480" data-protein="6g" data-carbs="68g" data-fat="22g">
+          <div class="food__img-wrap">
+            <img src="images/cake.jpg" alt="Celebration Cake" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Celebration</span>
+            <h3 class="food__name">Celebration Cake</h3>
+            <p class="food__desc">Custom-baked layered sponge cake, elegantly decorated for any special occasion.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦45,000 <small>per order</small></div>
+            <button class="food__btn" data-name="Celebration Cake" data-price="45000" data-img="images/cake.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- DOUGHNUT -->
+        <div class="food" data-modal data-name="Doughnut" data-category="Snacks" data-img="images/doughnut.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="Freshly made ring doughnuts with a soft, pillowy crumb and a light golden fry. Finished with a smooth vanilla glaze that sets into a sweet, slightly crisp shell. Whether enjoyed as a morning snack or an afternoon treat, these doughnuts are hard to stop at just one." data-cal="320" data-protein="5g" data-carbs="44g" data-fat="14g">
+          <div class="food__img-wrap">
+            <img src="images/doughnut.jpg" alt="Doughnut" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Doughnut</h3>
+            <p class="food__desc">Soft, pillowy ring doughnuts finished with a sweet vanilla glaze — freshly made daily.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Doughnut" data-price="2500" data-img="images/doughnut.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- MEATPIE AND SUYA -->
+        <div class="food" data-modal data-name="Meatpie and Suya" data-category="Snacks" data-img="images/meatpie.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="A winning Nigerian street-food combo — a golden, flaky shortcrust pastry filled with a well-seasoned minced beef and potato filling, baked to a beautiful crisp. Paired with tender strips of suya: thinly sliced beef rubbed in smoky yaji spice blend and grilled over open charcoal. Two classics, one unforgettable plate." data-cal="520" data-protein="26g" data-carbs="46g" data-fat="24g">
+          <div class="food__img-wrap">
+            <img src="images/meatpie.jpg" alt="Meatpie and Suya" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Snacks</span>
+            <h3 class="food__name">Meatpie and Suya</h3>
+            <p class="food__desc">Flaky beef-filled pastry paired with smoky yaji-spiced suya skewers off the grill.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Meatpie and Suya" data-price="2500" data-img="images/meatpie.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- GIFT BOX -->
+        <div class="food" data-modal data-name="Gift Box" data-category="Gift" data-img="images/gift.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="Treat someone special — or yourself — to a thoughtfully curated FoodieHub gift box. Each box is packed with a handpicked selection of our signature snacks, treats, and flavours, beautifully arranged and ready to gift. Perfect for birthdays, celebrations, corporate gifting, or simply showing someone you care. Contents vary by season." data-cal="—" data-protein="—" data-carbs="—" data-fat="—">
+          <div class="food__img-wrap">
+            <img src="images/gift.jpg" alt="Gift Box" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Gift</span>
+            <h3 class="food__name">Gift Box</h3>
+            <p class="food__desc">A beautifully curated food gift box — perfect for celebrations, birthdays, or loved ones.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per order</small></div>
+            <button class="food__btn" data-name="Gift Box" data-price="2500" data-img="images/gift.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- BLACK SOUP & STARCH -->
+        <div class="food" data-modal data-name="Black Soup & Starch" data-category="Soups" data-img="images/bllack soup.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="An iconic Edo delicacy, Black Soup gets its dramatic deep colour from a combination of charred vegetables, bitter leaf, and rich palm oil. The complex, smoky broth is packed with assorted meats and dried fish, then served alongside soft, stretchy cassava starch swallow. Bold, earthy flavours that linger beautifully." data-cal="545" data-protein="30g" data-carbs="72g" data-fat="17g">
+          <div class="food__img-wrap">
+            <img src="images/bllack soup.jpg" alt="Black Soup and Starch" loading="lazy">
+            <span class="food__badge">Popular</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Soups</span>
+            <h3 class="food__name">Black Soup & Starch</h3>
+            <p class="food__desc">Smoky Edo black soup packed with assorted meats and served with stretchy cassava starch.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(128)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦2,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Black Soup & Starch" data-price="2500" data-img="images/bllack soup.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- LOCAL OKPA -->
+        <div class="food" data-modal data-name="Local Okpa" data-category="Snacks" data-img="images/OKPA.jpg" data-badge="Popular" data-price="2500" data-stars="4.5" data-rating="128" data-desc="Okpa is a wholesome, protein-rich snack native to Enugu State, made by steaming seasoned bambara nut flour wrapped in banana or uma leaves. The result is a firm, savory, mildly spiced pudding with a beautiful golden colour. Filling, nutritious, and beloved as a quick meal across the entire South-East." data-cal="310" data-protein="18g" data-carbs="42g" data-fat="8g">
+          <div class="food__img-wrap">
+            <img src="images/OKPA.jpg" alt="Local Okpa" loading="lazy">
             <span class="food__badge">Popular</span>
           </div>
           <div class="food__body">
             <span class="food__category">Snacks</span>
             <h3 class="food__name">Local Okpa</h3>
-            <p class="food__desc">Steamed savory pudding from bambara nuts,a popular healthy snack.</p>
+            <p class="food__desc">Golden bambara nut pudding steamed in banana leaves — a nourishing Enugu street favourite.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(128)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,500 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Local Okpa" data-price="2500" data-img="images/OKPA.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
-        <div class="food">
+
+        <!-- EGUSI SOUP & EBA -->
+        <div class="food" data-modal data-name="Egusi Soup & Eba" data-category="Soups" data-img="images/istockphoto-1327486548-612x612.jpg" data-badge="" data-price="2200" data-stars="4.0" data-rating="94" data-desc="Egusi Soup is one of Nigeria's most beloved dishes — ground melon seeds cooked down into a thick, hearty stew with stockfish, smoked fish, and assorted cuts of meat, all enriched with palm oil, crayfish, and leafy vegetables. Served with Eba (cassava fufu), each mouthful is warm, savoury, and deeply satisfying." data-cal="610" data-protein="32g" data-carbs="74g" data-fat="22g">
           <div class="food__img-wrap">
-            <img src="images/istockphoto-1327486548-612x612.jpg" alt="Egusi Soup and Eba">
+            <img src="images/istockphoto-1327486548-612x612.jpg" alt="Egusi Soup and Eba" loading="lazy">
           </div>
           <div class="food__body">
             <span class="food__category">Soups</span>
             <h3 class="food__name">Egusi Soup & Eba</h3>
-            <p class="food__desc">Ground melon seed soup with stockfish, assorted meat & cassava fufu.</p>
+            <p class="food__desc">Rich melon seed stew with stockfish and assorted meat, served with firm cassava eba.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-regular fa-star"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
               <span class="food__stars-count">(94)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,200 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Egusi Soup & Eba" data-price="2200" data-img="images/istockphoto-1327486548-612x612.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- JOLLOF RICE & CHICKEN -->
+        <div class="food" data-modal data-name="Jollof Rice & Chicken" data-category="Rice Dishes" data-img="images/istockphoto-1448028228-612x612.jpg" data-badge="Bestseller" data-price="3000" data-stars="5.0" data-rating="210" data-desc="The undisputed king of Nigerian party food. Our Jollof Rice is slow-cooked in a smoky tomato-pepper base, seasoned with a signature blend of spices that gives it that legendary party-rice aroma. Served with a whole seasoned chicken, grilled to golden perfection. One plate and you'll understand exactly why this dish sparks so many debates." data-cal="720" data-protein="45g" data-carbs="80g" data-fat="20g">
           <div class="food__img-wrap">
-            <img src="images/istockphoto-1448028228-612x612.jpg" alt="Jollof Rice and Chicken">
+            <img src="images/istockphoto-1448028228-612x612.jpg" alt="Jollof Rice and Chicken" loading="lazy">
             <span class="food__badge">Bestseller</span>
           </div>
           <div class="food__body">
             <span class="food__category">Rice Dishes</span>
             <h3 class="food__name">Jollof Rice & Chicken</h3>
-            <p class="food__desc">Smoky party-style Jollof rice served with a whole seasoned grilled chicken.</p>
+            <p class="food__desc">Legendary smoky party Jollof, slow-cooked in a rich tomato base with whole grilled chicken.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
               <span class="food__stars-count">(210)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦3,000 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Jollof Rice & Chicken" data-price="3000" data-img="images/istockphoto-1448028228-612x612.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- FRIED RICE & PLANTAIN -->
+        <div class="food" data-modal data-name="Fried Rice & Plantain" data-category="Rice Dishes" data-img="images/plantain.jpg" data-badge="" data-price="2800" data-stars="4.5" data-rating="145" data-desc="A colourful, fragrant stir-fried rice loaded with garden vegetables — carrots, green beans, corn, and spring onions — tossed in a lightly seasoned wok. Paired with golden slices of ripe sweet plantain that add a caramelised sweetness to every bite. Bright, balanced, and absolutely crowd-pleasing." data-cal="580" data-protein="18g" data-carbs="88g" data-fat="16g">
           <div class="food__img-wrap">
-            <img src="images/plantain.jpg" alt="Fried Rice and Plantain">
+            <img src="images/plantain.jpg" alt="Fried Rice and Plantain" loading="lazy">
           </div>
           <div class="food__body">
             <span class="food__category">Rice Dishes</span>
             <h3 class="food__name">Fried Rice & Plantain</h3>
-            <p class="food__desc">Colourful stir-fried rice with garden vegetables & sweet ripe plantain slices.</p>
+            <p class="food__desc">Vibrant wok-fried rice with mixed vegetables, topped with caramelised ripe plantain.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(145)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦2,800 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Fried Rice & Plantain" data-price="2800" data-img="images/plantain.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- JOLLOF RICE WITH BEEF SKEWERS -->
+        <div class="food" data-modal data-name="Jollof Rice with Beef Skewers & Salad" data-category="Grills" data-img="images/download.jpg" data-badge="Spicy 🌶" data-price="12500" data-stars="4.5" data-rating="176" data-desc="A premium platter for the serious food lover — smoky party Jollof rice served alongside juicy charcoal-grilled beef skewers seasoned in a fiery yaji marinade. Completed with a fresh garden salad and golden fried plantain on the side. A full, flavourful meal that combines the best of Nigerian rice and grill culture on one plate." data-cal="780" data-protein="48g" data-carbs="85g" data-fat="28g">
           <div class="food__img-wrap">
-            <img src="images/suya.jpg" alt="Suya Platter">
+            <img src="images/download.jpg" alt="Jollof Rice with Beef Skewers and Salad" loading="lazy">
+            <span class="food__badge">Spicy 🌶</span>
+          </div>
+          <div class="food__body">
+            <span class="food__category">Grills</span>
+            <h3 class="food__name">Jollof Rice with Beef Skewers & Salad</h3>
+            <p class="food__desc">Smoky Jollof paired with yaji-spiced beef skewers, fresh salad and fried plantain.</p>
+            <div class="food__stars">
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
+              <span class="food__stars-count">(176)</span>
+            </div>
+          </div>
+          <div class="food__footer">
+            <div class="food__price">₦12,500 <small>per serving</small></div>
+            <button class="food__btn" data-name="Jollof Rice with Beef Skewers & Salad" data-price="12500" data-img="images/download.jpg"><i class="fa-solid fa-plus"></i> Add</button>
+          </div>
+        </div>
+
+        <!-- SUYA PLATTER -->
+        <div class="food" data-modal data-name="Suya Platter" data-category="Grills" data-img="images/suya.jpg" data-badge="Spicy 🌶" data-price="3500" data-stars="4.5" data-rating="176" data-desc="A Northern Nigerian street-food legend. Thinly sliced, marinated beef skewers rubbed generously in yaji — a fiery blend of ground groundnuts, ginger, paprika, and secret spices. Grilled over open charcoal for that unmistakable smoky char. Served with fresh sliced onions, tomatoes, and extra yaji on the side. Addictively spicy." data-cal="440" data-protein="42g" data-carbs="8g" data-fat="26g">
+          <div class="food__img-wrap">
+            <img src="images/suya.jpg" alt="Suya Platter" loading="lazy">
             <span class="food__badge">Spicy 🌶</span>
           </div>
           <div class="food__body">
             <span class="food__category">Grills</span>
             <h3 class="food__name">Suya Platter</h3>
-            <p class="food__desc">Thinly sliced beef skewers seasoned with yaji spice, served with onions & tomatoes.</p>
+            <p class="food__desc">Charcoal-grilled beef skewers rubbed in smoky yaji spice, served with fresh onions and tomatoes.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(176)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦3,500 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Suya Platter" data-price="3500" data-img="images/suya.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- GRILLED TILAPIA -->
+        <div class="food" data-modal data-name="Grilled Tilapia" data-category="Grills" data-img="images/tilapia.jpg" data-badge="" data-price="4000" data-stars="4.5" data-rating="102" data-desc="A whole fresh tilapia, butterflied and marinated overnight in a vibrant blend of scotch bonnet pepper, garlic, ginger, and herbs. Char-grilled to perfection over open flames until the skin is beautifully crisp and the flesh is moist and flaky. Served with golden seasoned chips and a tangy pepper dipping sauce on the side." data-cal="390" data-protein="48g" data-carbs="22g" data-fat="12g">
           <div class="food__img-wrap">
-            <img src="images/tilapia.jpg" alt="Grilled Tilapia">
+            <img src="images/tilapia.jpg" alt="Grilled Tilapia" loading="lazy">
           </div>
           <div class="food__body">
             <span class="food__category">Grills</span>
             <h3 class="food__name">Grilled Tilapia</h3>
-            <p class="food__desc">Whole tilapia marinated in pepper sauce, char-grilled & served with chips.</p>
+            <p class="food__desc">Whole butterflied tilapia marinated in pepper and herbs, char-grilled and served with seasoned chips.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(102)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦4,000 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Grilled Tilapia" data-price="4000" data-img="images/tilapia.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- PUFF-PUFF -->
+        <div class="food" data-modal data-name="Puff-Puff" data-category="Snacks" data-img="images/puff puff.jpg" data-badge="" data-price="800" data-stars="4.0" data-rating="87" data-desc="Nigeria's favourite sweet street snack — soft, pillowy balls of yeast-leavened dough deep-fried until they puff up into perfect golden spheres. Lightly dusted with cinnamon sugar while still hot, giving a crispy shell with a fluffy, airy centre. Best enjoyed fresh and warm. Perfect as a snack, dessert, or a little treat any time of day." data-cal="280" data-protein="5g" data-carbs="38g" data-fat="12g">
           <div class="food__img-wrap">
-            <img src="images/puff puff.jpg" alt="Puff Puff">
+            <img src="images/puff puff.jpg" alt="Puff Puff" loading="lazy">
           </div>
           <div class="food__body">
             <span class="food__category">Snacks</span>
             <h3 class="food__name">Puff-Puff</h3>
-            <p class="food__desc">Light, fluffy deep-fried dough balls dusted in cinnamon sugar.</p>
+            <p class="food__desc">Puffy golden dough balls dusted in cinnamon sugar — best enjoyed hot and fresh.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-regular fa-star"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i>
               <span class="food__stars-count">(87)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦800 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Puff-Puff" data-price="800" data-img="images/puff puff.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-        <div class="food">
+        <!-- CHAPMAN COCKTAIL -->
+        <div class="food" data-modal data-name="Chapman Cocktail" data-category="Drinks" data-img="images/chapman.jpg" data-badge="Refreshing" data-price="1200" data-stars="4.5" data-rating="98" data-desc="Nigeria's most iconic non-alcoholic cocktail, and a staple at every gathering. Our Chapman is a chilled blend of grenadine syrup, Fanta Orange, Sprite, Angostura bitters, and fresh cucumber slices poured generously over crushed ice. Sweet, tangy, fizzy, and instantly refreshing — the perfect companion to any FoodieHub meal." data-cal="180" data-protein="0g" data-carbs="44g" data-fat="0g">
           <div class="food__img-wrap">
-            <img src="images/chapman.jpg" alt="Chapman Cocktail">
+            <img src="images/chapman.jpg" alt="Chapman Cocktail" loading="lazy">
             <span class="food__badge">Refreshing</span>
           </div>
           <div class="food__body">
             <span class="food__category">Drinks</span>
             <h3 class="food__name">Chapman Cocktail</h3>
-            <p class="food__desc">Nigerian classic: grenadine, Fanta, Sprite & cucumber over crushed ice.</p>
+            <p class="food__desc">Nigeria's beloved chilled cocktail — grenadine, Fanta, Sprite and cucumber over crushed ice.</p>
             <div class="food__stars">
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star"></i>
-              <i class="fa-solid fa-star-half-stroke"></i>
+              <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i>
               <span class="food__stars-count">(98)</span>
             </div>
           </div>
           <div class="food__footer">
             <div class="food__price">₦1,200 <small>per serving</small></div>
-            <a href="#" class="food__btn"><i class="fa-solid fa-plus"></i> Add</a>
+            <button class="food__btn" data-name="Chapman Cocktail" data-price="1200" data-img="images/chapman.jpg"><i class="fa-solid fa-plus"></i> Add</button>
           </div>
         </div>
 
-      </div>
+      </div><!-- /food_grid -->
     </div>
   </section>
+
+  <!-- FOOD DETAIL MODAL -->
+  <div class="fdm-overlay" id="fdmOverlay">
+    <div class="fdm" id="fdm">
+      <div class="fdm__hero">
+        <img id="fdmImg" src="" alt="">
+        <div class="fdm__hero-overlay"></div>
+        <span class="fdm__badge" id="fdmBadge"></span>
+        <button class="fdm__close" id="fdmClose" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+        <div class="fdm__hero-title">
+          <div class="fdm__hero-cat" id="fdmCat"></div>
+          <div class="fdm__hero-name" id="fdmName"></div>
+        </div>
+      </div>
+      <div class="fdm__body">
+        <div class="fdm__meta">
+          <div class="fdm__stars" id="fdmStars"></div>
+          <div class="fdm__price" id="fdmPrice"></div>
+        </div>
+        <div>
+          <div class="fdm__desc-label">About this dish</div>
+          <p class="fdm__desc-text" id="fdmDesc"></p>
+        </div>
+        <div class="fdm__nutrition">
+          <div class="fdm__nutrition-title"><i class="fa-solid fa-chart-pie"></i> Nutritional Info <span style="font-weight:400;color:#aaa">(per serving)</span></div>
+          <div class="fdm__nutrition-grid" id="fdmNutrition"></div>
+        </div>
+      </div>
+      <div class="fdm__footer">
+        <button class="fdm__add-btn" id="fdmAddBtn"><i class="fa-solid fa-plus"></i> Add to Order</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+  <div class="popup-stack" id="popupStack"></div>
+
+  <button class="cart-fab" id="cartFab" aria-label="Open cart">
+    <i class="fa-solid fa-basket-shopping"></i>
+    <span class="cart-fab__badge" id="cartBadge">0</span>
+  </button>
+
+  <div class="cart-overlay" id="cartOverlay"></div>
+  <aside class="cart-drawer" id="cartDrawer" aria-label="Your cart">
+    <div class="cart-drawer__header">
+      <h2><i class="fa-solid fa-basket-shopping"></i> Your Order</h2>
+      <button class="cart-close" id="cartClose" aria-label="Close cart"><i class="fa-solid fa-xmark"></i></button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span class="cart-total__label">Total</span>
+        <span class="cart-total__amount" id="cartTotal">₦0</span>
+      </div>
+      <button class="cart-checkout" id="cartCheckout" disabled>
+        <i class="fa-solid fa-lock"></i> Proceed to Checkout
+      </button>
+      <button class="cart-clear" id="cartClear">Clear order</button>
+    </div>
+  </aside>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-col footer-brand">
+        <img src="./images/flogo.png" alt="FoodieHub Logo">
+        <span>FoodieHub</span>
+        <p>Bringing the rich flavours of Nigerian cuisine to your table. Made with love, served with pride.</p>
+        <div class="social-icons">
+          <a href="#"><i class="fa-brands fa-facebook"></i></a>
+          <a href="#"><i class="fa-brands fa-instagram"></i></a>
+          <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Contact Us</h3>
+        <ul>
+          <li><i class="fa-solid fa-location-dot"></i> 12 Jollof Street, Lagos, Nigeria</li>
+          <li><i class="fa-solid fa-phone"></i> +234 7033173002</li>
+          <li><i class="fa-solid fa-envelope"></i> hello@foodiehub.com</li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Opening Hours</h3>
+        <ul>
+          <li><span>Monday – Friday</span> <span>9:00am – 10:00pm</span></li>
+          <li><span>Saturday</span> <span>10:00am – 11:00pm</span></li>
+          <li><span>Sunday</span> <span>12:00pm – 9:00pm</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2025 FoodieHub. All rights reserved.</p>
+    </div>
+  </footer>
 
   <script>
     const hamburger = document.getElementById('hamburger');
@@ -378,7 +1000,207 @@
     }
     bindSearch('desk-search-toggle', 'desk-search');
     bindSearch('mob-search-toggle',  'mob-search');
+
+    let cart = [];
+
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${message}`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('removing');
+        toast.addEventListener('animationend', () => toast.remove());
+      }, 2200);
+    }
+
+    function showPopupCard(name, price, qty, img) {
+      const stack = document.getElementById('popupStack');
+      while (stack.children.length >= 3) dismissPopup(stack.firstElementChild, true);
+      const iconHTML = img ? `<img src="${img}" alt="${name}">` : `<i class="fa-solid fa-bowl-food"></i>`;
+      const card = document.createElement('div');
+      card.className = 'popup-card';
+      card.innerHTML = `
+        <div class="popup-card__icon">${iconHTML}</div>
+        <div class="popup-card__body">
+          <div class="popup-card__label">Added to order</div>
+          <div class="popup-card__name">${name}</div>
+          <div class="popup-card__meta">
+            <i class="fa-solid fa-naira-sign"></i>${Number(price).toLocaleString('en-NG')} &nbsp;·&nbsp;
+            <i class="fa-solid fa-layer-group"></i> Qty: ${qty}
+          </div>
+        </div>
+        <button class="popup-card__dismiss" aria-label="Dismiss"><i class="fa-solid fa-xmark"></i></button>
+        <div class="popup-card__progress"></div>
+      `;
+      card.querySelector('.popup-card__dismiss').addEventListener('click', () => dismissPopup(card));
+      stack.appendChild(card);
+      const timer = setTimeout(() => dismissPopup(card), 3000);
+      card._timer = timer;
+    }
+
+    function dismissPopup(card, instant = false) {
+      if (!card || !card.isConnected) return;
+      clearTimeout(card._timer);
+      if (instant) { card.remove(); return; }
+      card.classList.add('removing');
+      card.addEventListener('animationend', () => card.remove(), { once: true });
+    }
+
+    function formatPrice(n) { return '₦' + n.toLocaleString('en-NG'); }
+
+    function renderCart() {
+      const itemsEl    = document.getElementById('cartItems');
+      const totalEl    = document.getElementById('cartTotal');
+      const badgeEl    = document.getElementById('cartBadge');
+      const checkoutEl = document.getElementById('cartCheckout');
+
+      if (cart.length === 0) {
+        itemsEl.innerHTML = `<div class="cart-empty"><i class="fa-solid fa-basket-shopping"></i><p>Your order is empty</p></div>`;
+        totalEl.textContent = '₦0';
+        badgeEl.classList.remove('visible');
+        checkoutEl.disabled = true;
+        return;
+      }
+
+      const totalQty    = cart.reduce((s, i) => s + i.qty, 0);
+      const totalAmount = cart.reduce((s, i) => s + i.price * i.qty, 0);
+      badgeEl.textContent = totalQty;
+      badgeEl.classList.add('visible');
+      totalEl.textContent = formatPrice(totalAmount);
+      checkoutEl.disabled = false;
+
+      itemsEl.innerHTML = cart.map((item, idx) => `
+        <div class="cart-item" data-idx="${idx}">
+          <div class="cart-item__name">
+            ${item.name}
+            <div class="cart-item__unit">${formatPrice(item.price)} each</div>
+          </div>
+          <div class="cart-item__qty">
+            <button class="qty-btn minus" data-action="dec" data-idx="${idx}"><i class="fa-solid fa-minus"></i></button>
+            <span class="qty-value">${item.qty}</span>
+            <button class="qty-btn" data-action="inc" data-idx="${idx}"><i class="fa-solid fa-plus"></i></button>
+          </div>
+          <div class="cart-item__price">${formatPrice(item.price * item.qty)}</div>
+          <button class="cart-item__remove" data-action="remove" data-idx="${idx}"><i class="fa-solid fa-trash-can"></i></button>
+        </div>
+      `).join('');
+    }
+
+    document.querySelectorAll('.food__btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const name  = btn.dataset.name;
+        const price = parseInt(btn.dataset.price, 10);
+        const img   = btn.dataset.img;
+        const existing = cart.find(i => i.name === name);
+        if (existing) { existing.qty++; } else { cart.push({ name, price, qty: 1 }); }
+        renderCart();
+        showToast(`${name} added to order`);
+        showPopupCard(name, price, existing ? existing.qty : 1, img);
+        btn.innerHTML = '<i class="fa-solid fa-check"></i> Added';
+        btn.style.background = '#2d7a2d';
+        setTimeout(() => { btn.innerHTML = '<i class="fa-solid fa-plus"></i> Add'; btn.style.background = ''; }, 900);
+      });
+    });
+
+    document.getElementById('cartItems').addEventListener('click', e => {
+      const actionBtn = e.target.closest('[data-action]');
+      if (!actionBtn) return;
+      const idx    = parseInt(actionBtn.dataset.idx, 10);
+      const action = actionBtn.dataset.action;
+      if (action === 'inc') { cart[idx].qty++; }
+      else if (action === 'dec') { cart[idx].qty--; if (cart[idx].qty <= 0) cart.splice(idx, 1); }
+      else if (action === 'remove') { cart.splice(idx, 1); }
+      renderCart();
+    });
+
+    document.getElementById('cartClear').addEventListener('click', () => { cart = []; renderCart(); });
+
+    document.getElementById('cartCheckout').addEventListener('click', () => {
+      showToast('Order placed! We\'ll be right with you 🎉');
+      cart = []; renderCart(); closeCart();
+    });
+
+    function openCart()  { document.getElementById('cartDrawer').classList.add('open'); document.getElementById('cartOverlay').classList.add('open'); }
+    function closeCart() { document.getElementById('cartDrawer').classList.remove('open'); document.getElementById('cartOverlay').classList.remove('open'); }
+
+    document.getElementById('cartFab').addEventListener('click', openCart);
+    document.getElementById('cartClose').addEventListener('click', closeCart);
+    document.getElementById('cartOverlay').addEventListener('click', closeCart);
+
+    const fdmOverlay = document.getElementById('fdmOverlay');
+    const fdmClose   = document.getElementById('fdmClose');
+    let   fdmCurrent = null;
+
+    function buildStars(rating) {
+      const full  = Math.floor(rating);
+      const half  = rating % 1 >= 0.5;
+      const empty = 5 - full - (half ? 1 : 0);
+      return '<i class="fa-solid fa-star"></i>'.repeat(full)
+        + (half ? '<i class="fa-solid fa-star-half-stroke"></i>' : '')
+        + '<i class="fa-regular fa-star"></i>'.repeat(empty);
+    }
+
+    function openFoodModal(card) {
+      const d = card.dataset;
+      fdmCurrent = d;
+      document.getElementById('fdmImg').src  = d.img;
+      document.getElementById('fdmImg').alt  = d.name;
+      document.getElementById('fdmCat').textContent  = d.category;
+      document.getElementById('fdmName').textContent = d.name;
+      const badge = document.getElementById('fdmBadge');
+      badge.textContent   = d.badge || '';
+      badge.style.display = d.badge ? 'inline-block' : 'none';
+      document.getElementById('fdmStars').innerHTML =
+        buildStars(parseFloat(d.stars)) + `<span class="food__stars-count">(${d.rating})</span>`;
+      document.getElementById('fdmPrice').innerHTML =
+        `₦${parseInt(d.price).toLocaleString('en-NG')}<small>per serving</small>`;
+      document.getElementById('fdmDesc').textContent = d.desc;
+      document.getElementById('fdmNutrition').innerHTML = `
+        <div class="fdm__nut-item"><div class="fdm__nut-value">${d.cal}</div><div class="fdm__nut-label">Calories</div></div>
+        <div class="fdm__nut-item"><div class="fdm__nut-value">${d.protein}</div><div class="fdm__nut-label">Protein</div></div>
+        <div class="fdm__nut-item"><div class="fdm__nut-value">${d.carbs}</div><div class="fdm__nut-label">Carbs</div></div>
+        <div class="fdm__nut-item"><div class="fdm__nut-value">${d.fat}</div><div class="fdm__nut-label">Fat</div></div>
+      `;
+      const addBtn = document.getElementById('fdmAddBtn');
+      addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add to Order';
+      addBtn.classList.remove('added');
+      addBtn.style.background = '';
+      fdmOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeFoodModal() { fdmOverlay.classList.remove('open'); document.body.style.overflow = ''; }
+
+    document.querySelectorAll('.food[data-modal]').forEach(card => {
+      card.addEventListener('click', e => {
+        if (e.target.closest('.food__btn')) return;
+        openFoodModal(card);
+      });
+    });
+
+    fdmClose.addEventListener('click', closeFoodModal);
+    fdmOverlay.addEventListener('click', e => { if (e.target === fdmOverlay) closeFoodModal(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeFoodModal(); });
+
+    document.getElementById('fdmAddBtn').addEventListener('click', () => {
+      if (!fdmCurrent) return;
+      const name  = fdmCurrent.name;
+      const price = parseInt(fdmCurrent.price, 10);
+      const img   = fdmCurrent.img;
+      const existing = cart.find(i => i.name === name);
+      if (existing) { existing.qty++; } else { cart.push({ name, price, qty: 1 }); }
+      renderCart();
+      showToast(`${name} added to order`);
+      showPopupCard(name, price, existing ? existing.qty : 1, img);
+      const addBtn = document.getElementById('fdmAddBtn');
+      addBtn.innerHTML = '<i class="fa-solid fa-check"></i> Added!';
+      addBtn.classList.add('added');
+      setTimeout(() => { addBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add to Order'; addBtn.classList.remove('added'); }, 1200);
+    });
+
+    renderCart();
   </script>
- 
 </body>
 </html>
