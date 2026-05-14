@@ -252,23 +252,9 @@ body{
           font-size: 15px; }
 }
 .home {
-      background: linear-gradient(120deg, rgb(5, 5, 102), rgb(89, 23, 97), rgb(218, 16, 167), rgb(148, 83, 179)) 0% 0% / 400% 400%;
+    background-color: purple;
     animation: 10s ease 0s infinite normal none running gradientShift ;
     padding: 0 7vw 60px;
-}
-@keyframes gradientShift{
-    0%{
-        background-position: 0px 50%;
-
-    }
-    50%{
-        background-position: 100% 50%;
-        
-    }
-    100%{
-        background-position: 0% 50%;
-
-    }
 }
 
 .main_slide {
