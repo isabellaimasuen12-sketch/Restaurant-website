@@ -252,7 +252,7 @@ body{
           font-size: 15px; }
 }
 .home {
-    background-color: purple;
+    background-color: gray;
     animation: 10s ease 0s infinite normal none running gradientShift ;
     padding: 0 7vw 60px;
 }
