@@ -718,6 +718,7 @@ body{
     background-color: rgb(107, 16, 107);
     box-shadow: 0 8px 20px rgba(107, 16, 107, 0.3);
     transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
 }
 
 .single_chef:hover {
