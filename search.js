@@ -403,7 +403,6 @@
     });
   }
 
-  /* ── INIT ───────────────────────────────────── */
 
   function init() {
     injectStyles(DROPDOWN_CSS, 'fh-search-styles');

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="shortcut icon" href="../images/flogo.png" type="images/x-icon">
+  <link rel="shortcut icon" href="../images/Screenshot 2026-05-29 170616.png" type="images/x-icon">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,7 +15,7 @@
   <div class="overlay" id="overlay"></div>
   <nav class="sidebar" id="sidebar">
     <div class="sidebar-logo">
-      <img src="./images/flogo.png" alt="Logo">
+      <img src="./images/Screenshot 2026-05-29 170616.png" alt="Logo">
       <span>FoodieHub</span>
     </div>
     <a href="index.html"><i class="fa-solid fa-house-chimney"></i> Home</a>
@@ -27,7 +27,7 @@
   <header>
     <div class="header">
       <div class="logo">
-        <img src="./images/flogo.png" alt="Logo">
+        <img src="./images/Screenshot 2026-05-29 170616.png" alt="Logo">
       </div>
       <div class="headerbar">
         <ul>
@@ -81,7 +81,7 @@
             </div>
             <div class="form-group">
               <label for="phone"><i class="fa-solid fa-phone"></i> Phone Number</label>
-              <input type="tel" id="phone" placeholder="e.g. +234 801 234 5678" required>
+              <input type="tel" id="phone" placeholder="e.g. +234 7033173002" required>
             </div>
           </div>
 
@@ -125,22 +125,22 @@
     <footer class="footer">
       <div class="footer-container">
         <div class="footer-col footer-brand">
-          <img src="./images/flogo.png" alt="FoodieHub Logo">
+          <img src="./images/Screenshot 2026-05-29 170616.png" alt="FoodieHub Logo">
           <span>FoodieHub</span>
           <p>Bringing the rich flavours of Nigerian cuisine to your table. Made with love, served with pride.</p>
           <div class="social-icons">
             <a href="#"><i class="fa-brands fa-facebook"></i></a>
             <a href="#"><i class="fa-brands fa-instagram"></i></a>
             <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
-            <a href="#"><i class="fa-brands fa-tiktok"></i></a>
+            <a href="Imasuen isabella"><i class="fa-brands fa-tiktok"></i></a>
           </div>
         </div>
         <div class="footer-col">
           <h3>Contact Us</h3>
           <ul>
             <li><i class="fa-solid fa-location-dot"></i> 15 Adeola crescent, opeyemi road, Ikeja Lagos, Nigeria</li>
-            <li><i class="fa-solid fa-phone"></i> +234 801 234 5678</li>
-            <li><i class="fa-solid fa-envelope"></i> hello@foodiehub.com</li>
+            <li><i class="fa-solid fa-phone"></i> +234 7033173002</li>
+            <li><i class="fa-solid fa-envelope"></i> foodiehub@gmail.com</li>
           </ul>
         </div>
         <div class="footer-col">
@@ -150,6 +150,9 @@
             <li><span>Saturday</span> <span>10:00am – 11:00pm</span></li>
             <li><span>Sunday</span> <span>12:00pm – 9:00pm</span></li>
           </ul>
+          <div>
+           &capbrcup;
+          </div>
         </div>
       </div>
       <div class="footer-bottom">
@@ -157,9 +160,7 @@
       </div>
     </footer>
   </div>
-
   <script>
-    /* ── SIDEBAR ── */
     const hamburger = document.getElementById('hamburger');
     const sidebar   = document.getElementById('sidebar');
     const overlay   = document.getElementById('overlay');
@@ -186,27 +187,23 @@
     document.getElementById('bookingForm').addEventListener('submit', function (e) {
       e.preventDefault();
 
-      // Generate booking reference: FH + random 6-char alphanumeric
+      
       const ref = 'FH-' + Math.random().toString(36).substring(2, 8).toUpperCase();
 
-      // Format date nicely
       const rawDate = document.getElementById('date').value;
       const dateObj = new Date(rawDate + 'T00:00:00');
       const formattedDate = dateObj.toLocaleDateString('en-NG', {
         weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
       });
 
-      // Format time nicely
       const rawTime = document.getElementById('time').value;
       const [h, m] = rawTime.split(':');
       const hr = parseInt(h);
       const formattedTime = `${hr % 12 || 12}:${m} ${hr >= 12 ? 'PM' : 'AM'}`;
 
-      // Guests label
       const guestsVal = document.getElementById('guests').value;
       const guestsLabel = guestsVal === '6' ? '6+ Guests' : `${guestsVal} Guest${guestsVal > 1 ? 's' : ''}`;
 
-      // Save to sessionStorage
       const bookingData = {
         ref,
         name:  document.getElementById('name').value.trim(),
@@ -218,7 +215,6 @@
       };
       sessionStorage.setItem('fh_booking', JSON.stringify(bookingData));
 
-      // Redirect
       window.location.href = 'confirmation.html';
     });
   </script>
